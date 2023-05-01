@@ -4,14 +4,13 @@ import {Button, Form, Input, message} from 'antd'
 import {LockOutlined, UserOutlined} from '@ant-design/icons'
 import {userLogin} from '../../api'
 import memoryUtil from '../../utils/memoryUtil'
+import storageUtil from '../../utils/storageUtil'
 
 import './login.scss'
-import logo from '../../assets/images/logo.png'
-import storageUtil from '../../utils/storageUtil'
 
 const Login = () => {
 
-  const navigate = useNavigate()
+  const navigateTo = useNavigate()
   const user = memoryUtil.user
 
   if (user && user.id) {
@@ -25,7 +24,7 @@ const Login = () => {
       const user = data.data
       memoryUtil.user = user
       storageUtil.setUser(user)
-      navigate('/', {replace: true})
+      navigateTo('/', {replace: true})
     } else {
       message.error(data.message)
     }
@@ -56,7 +55,6 @@ const Login = () => {
   return (
     <div className="login">
       <header className="login-header">
-        <img src={logo} alt="logo"/>
         <h1>{'后台管理项目'}</h1>
       </header>
       <section className="login-content">

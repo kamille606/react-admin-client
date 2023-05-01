@@ -1,6 +1,5 @@
-import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
-
+import React,{useState} from 'react'
+import {Link, useNavigate, useLocation} from 'react-router-dom'
 import {Menu} from 'antd'
 import {
   AppstoreOutlined,
@@ -15,7 +14,6 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 
-import logo from '../../assets/images/logo.png'
 import './index.scss'
 
 const getItem = (label, key, icon, children, type) => ({
@@ -23,37 +21,47 @@ const getItem = (label, key, icon, children, type) => ({
 })
 
 const items = [
-  getItem('首页', '1', <HomeOutlined/>),
-  getItem('商品', '2', <AppstoreOutlined/>, [
-    getItem('品类管理', '2-1', <BarsOutlined/>),
-    getItem('商品管理', '2-2', <ToolOutlined/>),
+  getItem('首页', '/home', <HomeOutlined/>),
+  getItem('商品', '/product', <AppstoreOutlined/>, [
+    getItem('商品管理', '/product/products', <BarsOutlined/>),
+    getItem('品类管理', '/product/category', <ToolOutlined/>),
   ]),
-  getItem('用户管理', '3', <UserOutlined/>),
-  getItem('角色管理', '4', <SafetyCertificateOutlined/>),
-  getItem('图形图表', '5', <AreaChartOutlined/>, [
-    getItem('柱状图', '5-1', <BarChartOutlined/>),
-    getItem('折线图', '5-2', <LineChartOutlined/>),
-    getItem('饼图', '5-3', <PieChartOutlined/>),
+  getItem('用户管理', '/user', <UserOutlined/>),
+  getItem('角色管理', '/role', <SafetyCertificateOutlined/>),
+  getItem('图形图表', '/charts', <AreaChartOutlined/>, [
+    getItem('柱状图', '/charts/bar', <BarChartOutlined/>),
+    getItem('折线图', '/charts/line', <LineChartOutlined/>),
+    getItem('饼图', '/charts/pie', <PieChartOutlined/>),
   ]),
 ]
 
 const LeftNav = () => {
+  const navigateTo = useNavigate()
+  const currentRoute = useLocation()
+  let firstOpenKey = currentRoute.pathname.split('/')[1]
+  const [openKeys, setOpenKeys] = useState(['/' + firstOpenKey]);
 
-  const [collapsed, setCollapsed] = useState(false)
-
+  const handleClick = (e) => {
+    navigateTo(e.key)
+  }
+  const handleOpenChange = (openKeys) => {
+    setOpenKeys([openKeys[openKeys.length - 1]])
+  }
   return (
     <div className="left-nav">
       <Link to="/" className="left-nav-header">
-        <img src={logo} alt="logo"/>
-        <h1>琳宝后台</h1>
+        <div style={{height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)'}}>
+          <h1>臭宝后台</h1>
+        </div>
       </Link>
       <Menu
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
         mode="inline"
         theme="dark"
-        inlineCollapsed={collapsed}
         items={items}
+        openKeys={openKeys}
+        selectedKeys={[currentRoute.pathname]}
+        onClick={handleClick}
+        onOpenChange={handleOpenChange}
       />
     </div>
   )
