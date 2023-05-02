@@ -18,15 +18,15 @@ const Login = () => {
   }
 
   const onFinish = async (values) => {
-    const {data} = await userLogin(values)
-    if (data.success) {
+    const response = await userLogin(values)
+    if (response.success) {
       message.success('登录成功')
-      const user = data.data
+      const user = response.data
       memoryUtil.user = user
       storageUtil.setUser(user)
       navigateTo('/', {replace: true})
     } else {
-      message.error(data.message)
+      message.error(response.message)
     }
   }
 

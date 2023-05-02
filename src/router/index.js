@@ -13,7 +13,7 @@ import NotFound from '../components/NotFound'
 const Login = lazy(() => import('../pages/login/login'))
 const Admin = lazy(() => import('../pages/admin/admin'))
 const Home = lazy(() => import('../pages/home/home'))
-const Product = lazy(() => import('../pages/product/product'))
+const Products = lazy(() => import('../pages/product/products'))
 const Category = lazy(() => import('../pages/product/category'))
 
 const withLoading = (element) => (
@@ -37,7 +37,7 @@ const routes = [
       },
       {
         path: '/product/products',
-        element: withLoading(<Product/>)
+        element: withLoading(<Products/>)
       },
       {
         path: '/product/category',

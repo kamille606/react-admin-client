@@ -1,4 +1,4 @@
-import {USER_KEY} from '../config'
+import {USER_KEY} from '../config/baseConfig'
 
 const store = {
   setUser(user) {
