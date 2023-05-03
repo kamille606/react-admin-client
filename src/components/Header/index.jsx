@@ -1,34 +1,39 @@
 import React, {useState, useEffect} from 'react'
-import {useLocation} from 'react-router-dom'
-import {message} from 'antd'
+import {useLocation, useNavigate} from 'react-router-dom'
+import {message, Modal, Button} from 'antd'
+import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
 
+import LinkButton from '../LinkButton'
 import {menuItems} from '../../config/menuConfig'
-
 import {getWeather} from '../../api'
 import {formatDate} from '../../utils/dateUtil'
 import memory from '../../utils/memoryUtil'
+import store from '../../utils/storageUtil'
 
 import './index.scss'
 
 const Header = () => {
 
+  const navigateTo = useNavigate()
   const currentRoute = useLocation()
-  const [weatherNow, setWeatherNow] = useState('');
-  const [temperature, setTemperature] = useState('');
-  const [timeNow, setTimeNow] = useState(formatDate());
-  const [user] = useState(memory.user);
-  const [title, setTitle] = useState('');
+  const [weatherNow, setWeatherNow] = useState('')
+  const [temperature, setTemperature] = useState('')
+  const [timeNow, setTimeNow] = useState(formatDate())
+  const [user] = useState(memory.user)
+  const [title, setTitle] = useState('')
 
-  useEffect(()=>{
+  useEffect(() => {
     initWeatherInfo().catch(error => {
       console.log(error)
     })
     initTitle(currentRoute.pathname)
-    setInterval(() => {
+    const id = setInterval(() => {
       setTimeNow(formatDate())
     }, 1000)
-  },[currentRoute.pathname])
-
+    return () => {
+      clearInterval(id)
+    }
+  }, [currentRoute.pathname])
 
   const initWeatherInfo = async () => {
     const response = await getWeather()
@@ -42,31 +47,52 @@ const Header = () => {
   }
 
   const initTitle = (pathname) => {
-    console.log(menuItems)
     menuItems.forEach(item => {
-      if (item.key===pathname) {
+      if (item.key === pathname) {
         setTitle(item.label)
+      } else if (item.children) {
+        const cItem = item.children.find(cItem => cItem.key === pathname)
+        if (cItem) {
+          setTitle(cItem.label)
+        }
       }
     })
   }
 
+  const logout = () => {
+    Modal.confirm({
+      title: '确定退出吗?',
+      icon: <ExclamationCircleFilled/>,
+      onOk() {
+        store.removeUser()
+        memory.user = {}
+        navigateTo('/login', {replace: true})
+      },
+    })
+  }
+
   return (
-    <div className='header'>
-      <div className='header-top'>
-        <span>欢迎，{user.nickname}</span>
-        {/*<a href='javascript:'>退出</a>*/}
+    <div className="header">
+      <div className="header-top">
+        <span className='header-top-hello'>欢迎，{user.nickname}</span>
+        <Button
+          type="primary"
+          icon={<PoweroffOutlined/>}
+          onClick={logout}
+        />
+        <LinkButton onClick={logout}>退出</LinkButton>
       </div>
-      <div className='header-bottom'>
-        <div className='header-bottom-left'>{title}</div>
-        <div className='header-bottom-right'>
+      <div className="header-bottom">
+        <div className="header-bottom-left">{title}</div>
+        <div className="header-bottom-right">
           <span>时间:{timeNow}</span>
           {/*<img></img>*/}
           <span>天气：{weatherNow}</span>
-          <span>温度：{temperature}</span>
+          <span>温度：{temperature}℃</span>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

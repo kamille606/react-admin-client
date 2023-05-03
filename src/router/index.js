@@ -1,23 +1,25 @@
-import {Navigate} from "react-router-dom";
-import React, {lazy} from "react";
-import {Spin} from 'antd';
+import {Navigate} from 'react-router-dom'
+import React, {lazy} from 'react'
+import {Spin} from 'antd'
 
-import User from '../pages/user/user'
-import Role from '../pages/role/role'
-import Bar from '../pages/charts/bar'
-import Line from '../pages/charts/line'
-import Pie from '../pages/charts/pie'
-
+import Login from '../pages/login/login'
+import Admin from '../pages/admin/admin'
 import NotFound from '../components/NotFound'
 
-const Login = lazy(() => import('../pages/login/login'))
-const Admin = lazy(() => import('../pages/admin/admin'))
 const Home = lazy(() => import('../pages/home/home'))
 const Products = lazy(() => import('../pages/product/products'))
 const Category = lazy(() => import('../pages/product/category'))
+const User = lazy(() => import('../pages/user/user'))
+const Role = lazy(() => import('../pages/role/role'))
+const Bar = lazy(() => import('../pages/charts/bar'))
+const Line = lazy(() => import('../pages/charts/line'))
+const Pie = lazy(() => import('../pages/charts/pie'))
 
 const withLoading = (element) => (
-  <React.Suspense fallback={<div><Spin/></div>}>
+  <React.Suspense fallback={
+    <Spin tip="Loading" size="large">
+      <div className="content"/>
+    </Spin>}>
     {element}
   </React.Suspense>
 )
@@ -25,7 +27,7 @@ const withLoading = (element) => (
 const routes = [
   {
     path: '/',
-    element: <Navigate to='/home'/>
+    element: <Navigate to="/home"/>,
   },
   {
     path: '/',
@@ -33,46 +35,46 @@ const routes = [
     children: [
       {
         path: '/home',
-        element: withLoading(<Home/>)
+        element: withLoading(<Home/>),
       },
       {
         path: '/product/products',
-        element: withLoading(<Products/>)
+        element: withLoading(<Products/>),
       },
       {
         path: '/product/category',
-        element: withLoading(<Category/>)
+        element: withLoading(<Category/>),
       },
       {
         path: '/user',
-        element: <User/>
+        element: withLoading(<User/>),
       },
       {
         path: '/role',
-        element: <Role/>
+        element: withLoading(<Role/>),
       },
       {
         path: '/charts/bar',
-        element: <Bar/>
+        element: withLoading(<Bar/>),
       },
       {
         path: '/charts/line',
-        element: <Line/>
+        element: withLoading(<Line/>),
       },
       {
         path: '/charts/pie',
-        element: <Pie/>
-      }
-    ]
+        element: withLoading(<Pie/>),
+      },
+    ],
   },
   {
     path: '/login',
-    element: <Login/>
+    element: <Login/>,
   },
   {
     path: '*',
-    element: <NotFound/>
-  }
+    element: <NotFound/>,
+  },
 ]
 
 export default routes

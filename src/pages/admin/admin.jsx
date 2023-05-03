@@ -1,21 +1,26 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Outlet, useNavigate} from 'react-router-dom'
-import {Layout} from 'antd'
-
-import memoryUtil from '../../utils/memoryUtil'
+import {Layout, message} from 'antd'
 
 import LeftNav from '../../components/LeftNav'
 import Header from '../../components/Header'
 
+import memoryUtil from '../../utils/memoryUtil'
+
 const {Footer, Sider, Content} = Layout
 
 const Admin = () => {
-  const navigate = useNavigate()
+
+  const navigateTo = useNavigate()
   const user = memoryUtil.user
 
-  if (!user || !user.id) {
-    navigate('/login')
-  }
+  useEffect(() => {
+    console.log('登录检测')
+    if (!user || !user.id) {
+      message.error('暂未登录，返回登录页面')
+      navigateTo('/login', {replace: true})
+    }
+  }, [navigateTo, user])
 
   return (
     <Layout style={{minHeight: '100vh'}}>
@@ -24,7 +29,7 @@ const Admin = () => {
       </Sider>
       <Layout>
         <Header>Header</Header>
-        <Content style={{margin: 15,backgroundColor: 'white'}}>
+        <Content style={{margin: 15, backgroundColor: 'white'}}>
           <Outlet/>
         </Content>
         <Footer style={{backgroundColor: 'aqua', textAlign: 'center'}}>Footer</Footer>
