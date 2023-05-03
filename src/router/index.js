@@ -17,7 +17,12 @@ const Pie = lazy(() => import('../pages/charts/pie'))
 
 const withLoading = (element) => (
   <React.Suspense fallback={
-    <Spin tip="Loading" size="large">
+    <Spin tip="Loading" size="large" style={{
+      alignItems: 'center',
+      alignContent: 'center',
+      justifyItems: 'center',
+      justifyContent: 'center'
+    }}>
       <div className="content"/>
     </Spin>}>
     {element}
@@ -38,12 +43,12 @@ const routes = [
         element: withLoading(<Home/>),
       },
       {
-        path: '/product/products',
-        element: withLoading(<Products/>),
-      },
-      {
         path: '/product/category',
         element: withLoading(<Category/>),
+      },
+      {
+        path: '/product/products',
+        element: withLoading(<Products/>),
       },
       {
         path: '/user',

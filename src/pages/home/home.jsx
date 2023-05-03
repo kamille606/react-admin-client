@@ -1,9 +1,11 @@
 import React from 'react'
 
+import './home.scss'
+
 const Home = () => {
   return (
-    <div>
-      Home
+    <div className='home'>
+      欢迎使用本系统
     </div>
   )
 }
