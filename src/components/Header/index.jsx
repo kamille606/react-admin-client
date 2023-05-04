@@ -5,7 +5,7 @@ import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
 
 import LinkButton from '../LinkButton'
 import {menuItems} from '../../config/menuConfig'
-import {getWeather} from '../../api'
+import {reqWeatherInfo} from '../../api'
 import {formatDate} from '../../utils/dateUtil'
 import memory from '../../utils/memoryUtil'
 import store from '../../utils/storageUtil'
@@ -36,7 +36,7 @@ const Header = () => {
   }, [currentRoute.pathname])
 
   const initWeatherInfo = async () => {
-    const response = await getWeather()
+    const response = await reqWeatherInfo()
     if (response.success) {
       const data = JSON.parse(response.data)
       setWeatherNow(data.now.text)
@@ -68,6 +68,8 @@ const Header = () => {
         memory.user = {}
         navigateTo('/login', {replace: true})
       },
+      okText: '退出',
+      cancelText: '取消'
     })
   }
 

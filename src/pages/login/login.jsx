@@ -2,7 +2,7 @@ import React from 'react'
 import {Navigate, useNavigate} from 'react-router-dom'
 import {Button, Form, Input, message} from 'antd'
 import {LockOutlined, UserOutlined} from '@ant-design/icons'
-import {userLogin} from '../../api'
+import {reqUserLogin} from '../../api'
 import memoryUtil from '../../utils/memoryUtil'
 import storageUtil from '../../utils/storageUtil'
 
@@ -18,7 +18,7 @@ const Login = () => {
   }
 
   const onFinish = async (values) => {
-    const response = await userLogin(values)
+    const response = await reqUserLogin(values)
     if (response.success) {
       message.success('登录成功')
       const user = response.data
@@ -53,23 +53,23 @@ const Login = () => {
   ]
 
   return (
-    <div className="login">
-      <header className="login-header">
+    <div className='login'>
+      <header className='login-header'>
         <h1>{'后台管理项目'}</h1>
       </header>
-      <section className="login-content">
+      <section className='login-content'>
         <h2>{'用户登录'}</h2>
         <div>
-          <Form name="normal_login" className="login-form" onFinish={onFinish}>
-            <Form.Item name="username" rules={usernameRules}>
-              <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="用户名"/>
+          <Form name='normal_login' className='login-form' onFinish={onFinish}>
+            <Form.Item name='username' rules={usernameRules}>
+              <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder='用户名'/>
             </Form.Item>
-            <Form.Item name="password" rules={passwordRules}>
-              <Input prefix={<LockOutlined className="site-form-item-icon"/>} type="password" placeholder="密码"/>
+            <Form.Item name='password' rules={passwordRules}>
+              <Input prefix={<LockOutlined className="site-form-item-icon"/>} type='password' placeholder='密码'/>
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">
+              <Button type='primary' htmlType='submit' className='login-form-button'>
                 {'登录'}
               </Button>
             </Form.Item>

@@ -5,7 +5,6 @@ import {BASE_URL} from '../config/baseConfig'
 const instance = axios.create({
   baseURL: BASE_URL,
   timeout: 2000,
-  headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 })
 
 // 添加响应拦截器

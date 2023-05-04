@@ -7,8 +7,8 @@ import Admin from '../pages/admin/admin'
 import NotFound from '../components/NotFound'
 
 const Home = lazy(() => import('../pages/home/home'))
-const Products = lazy(() => import('../pages/product/products'))
-const Category = lazy(() => import('../pages/product/category'))
+const Products = lazy(() => import('../pages/product/products/products'))
+const Category = lazy(() => import('../pages/product/category/category'))
 const User = lazy(() => import('../pages/user/user'))
 const Role = lazy(() => import('../pages/role/role'))
 const Bar = lazy(() => import('../pages/charts/bar'))
