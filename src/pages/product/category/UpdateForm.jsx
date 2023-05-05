@@ -1,19 +1,23 @@
-import React, {useEffect} from 'react'
+import React, {forwardRef, useEffect, useImperativeHandle} from 'react'
 import {Form, Input} from 'antd'
 
-const UpdateForm = (props) => {
+const UpdateForm = (props, ref) => {
 
-  const categoryName = props.categoryName
-  const [form] = Form.useForm();
+  const {categoryName} = props
+  const [form] = Form.useForm()
 
   const categoryNameRules = [
-    {min: 2, message: '分类名称至少2位!'},
-    {max: 12, message: '分类名称最多12位!'}
+    {required: true, message: '分类名称不能为空'}
   ]
+
+  useImperativeHandle(ref, () => ({
+    getFormData: form.getFieldsValue,
+    validateFields: form.validateFields
+  }))
 
   useEffect(() => {
     form.setFieldsValue({categoryName})
-  }, [props])
+  }, [categoryName])
 
   return (
     <Form form={form}>
@@ -24,4 +28,4 @@ const UpdateForm = (props) => {
   )
 }
 
-export default UpdateForm
+export default forwardRef(UpdateForm)

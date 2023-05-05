@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react'
-import {Button, Card, message, Table, Modal} from 'antd'
-import {PlusOutlined, ArrowRightOutlined} from '@ant-design/icons'
+import React, {useEffect, useRef, useState} from 'react'
+import {Button, Card, message, Modal, Table} from 'antd'
+import {ArrowRightOutlined, PlusOutlined} from '@ant-design/icons'
 
-import {reqCategoryList} from '../../../api'
+import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
 import LinkButton from '../../../components/LinkButton'
 import AddForm from './AddForm'
 import UpdateForm from './UpdateForm'
@@ -19,16 +19,17 @@ const Category = () => {
   const [tableLoading, setTableLoading] = useState(false)
   const [showStatus, setShowStatus] = useState(0)
 
+  const addFormRef = useRef(null)
+  const updateFormRef = useRef(null)
+
   useEffect(() => {
+    queryCategoryList()
     initTableColumns()
-    queryCategoryList().catch(e => console.log(e))
   }, [parentId])
 
-  const queryCategoryList = async () => {
-    if (categoryList.length === 0) {
-      setTableLoading(true)
-      const response = await reqCategoryList(parentId)
-      setTableLoading(false)
+  const queryCategoryList = () => {
+    setTableLoading(true)
+    reqCategoryList(parentId).then(response => {
       if (response.success) {
         const categoryList = response.data
         if (parentId === 0) {
@@ -37,9 +38,16 @@ const Category = () => {
           setSubCategoryList(categoryList)
         }
       } else {
-        message.error('获取分类列表失败')
+        message.error('获取分类列表失败').then()
       }
-    }
+    })
+    setTableLoading(false)
+  }
+
+  const showFirstCategoryList = () => {
+    setParentId(0)
+    setParentName('')
+    setSubCategoryList([])
   }
 
   const showSubCategoryList = (category) => {
@@ -47,10 +55,8 @@ const Category = () => {
     setParentName(category.categoryName)
   }
 
-  const showFirstCategoryList = () => {
-    setParentId(0)
-    setParentName('')
-    setSubCategoryList([])
+  const showAddCategoryForm = () => {
+    setShowStatus(1)
   }
 
   const showUpdateCategoryForm = (category) => {
@@ -62,12 +68,43 @@ const Category = () => {
     setShowStatus(0)
   }
 
-  const categoryAdd = () => {
-    console.log('categoryAdd')
+  const categoryAdd = async () => {
+    try {
+      const values = await addFormRef.current.validateFields()
+      const response = await reqCategoryAdd(values.parentId, values.categoryName)
+      if (response.success) {
+        message.success('添加成功')
+        addFormRef.current.cleanFormData(['categoryName'])
+        setShowStatus(0)
+        queryCategoryList()
+      } else {
+        message.error(response.message)
+      }
+    } catch (err) {
+      console.log('校验失败')
+    }
   }
 
-  const categoryUpdate = () => {
-    console.log('categoryUpdate')
+  const categoryUpdate = async () => {
+    //表单验证
+    try {
+      const values = await updateFormRef.current.validateFields()
+      if (values.categoryName === category.categoryName) {
+        message.success('修改成功')
+        setShowStatus(0)
+      } else {
+        const response = await reqCategoryUpdate(category.categoryId, values.categoryName)
+        if (response.success) {
+          message.success('修改成功')
+          setShowStatus(0)
+          queryCategoryList()
+        } else {
+          message.error(response.message)
+        }
+      }
+    } catch (err) {
+      console.log('校验失败')
+    }
   }
 
   const initTableColumns = () => {
@@ -82,8 +119,13 @@ const Category = () => {
         width: 300,
         render: (category) => (
           <span>
-            <LinkButton onClick={() => showUpdateCategoryForm(category)}>修改分类</LinkButton>
-            {parentId === 0 ? <LinkButton onClick={() => showSubCategoryList(category)}>查看子分类</LinkButton> : null}
+            <LinkButton onClick={() => showUpdateCategoryForm(category)}>
+              修改分类
+            </LinkButton>
+            {parentId === 0 ? (
+              <LinkButton onClick={() => showSubCategoryList(category)}>
+                查看子分类
+              </LinkButton>) : null}
           </span>
         )
       }
@@ -92,15 +134,18 @@ const Category = () => {
 
   const title = parentId === 0 ? '一级分类列表' : (
     <span>
-      <LinkButton style={{fontSize: 16}} onClick={showFirstCategoryList}>
+      <LinkButton
+        style={{fontSize: 16}}
+        onClick={() => showFirstCategoryList()}>
         一级分类列表
       </LinkButton>
       <ArrowRightOutlined style={{marginRight: 5}}/>
       <span>{parentName}</span>
     </span>
   )
+
   const extra = (
-    <Button onClick={() => setShowStatus(1)}>
+    <Button onClick={() => showAddCategoryForm()}>
       <PlusOutlined/>
       添加
     </Button>
@@ -122,24 +167,29 @@ const Category = () => {
 
         <Modal
           title="添加分类"
-          open={showStatus===1}
+          open={showStatus === 1}
           onOk={categoryAdd}
           onCancel={handleCancel}
-          okText='添加'
-          cancelText='取消'
+          okText="添加"
+          cancelText="取消"
         >
-          <AddForm parentId={category.parentId}/>
+          <AddForm
+            ref={addFormRef}
+            parentId={parentId}
+            categoryList={categoryList}/>
         </Modal>
 
         <Modal
           title="修改分类"
-          open={showStatus===2}
+          open={showStatus === 2}
           onOk={categoryUpdate}
           onCancel={handleCancel}
-          okText='修改'
-          cancelText='取消'
+          okText="修改"
+          cancelText="取消"
         >
-          <UpdateForm categoryName={category.categoryName}/>
+          <UpdateForm
+            ref={updateFormRef}
+            categoryName={category.categoryName}/>
         </Modal>
       </Card>
     </div>
