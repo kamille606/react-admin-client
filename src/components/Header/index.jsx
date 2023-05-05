@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
-import {message, Modal, Button} from 'antd'
+import {Button, message, Modal} from 'antd'
 import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
 
 import LinkButton from '../LinkButton'
@@ -23,9 +23,7 @@ const Header = () => {
   const [title, setTitle] = useState('')
 
   useEffect(() => {
-    initWeatherInfo().catch(error => {
-      console.log(error)
-    })
+    initWeatherInfo()
     initTitle(currentRoute.pathname)
     const id = setInterval(() => {
       setTimeNow(formatDate())
@@ -35,15 +33,16 @@ const Header = () => {
     }
   }, [currentRoute.pathname])
 
-  const initWeatherInfo = async () => {
-    const response = await reqWeatherInfo()
-    if (response.success) {
-      const data = JSON.parse(response.data)
-      setWeatherNow(data.now.text)
-      setTemperature(data.now.temp)
-    } else {
-      message.error('获取天气信息失败')
-    }
+  const initWeatherInfo = () => {
+    reqWeatherInfo().then(response => {
+      if (response.success) {
+        const data = JSON.parse(response.data)
+        setWeatherNow(data.now.text)
+        setTemperature(data.now.temp)
+      } else {
+        message.error('获取天气信息失败').then()
+      }
+    }).catch(message.error('获取天气信息失败'))
   }
 
   const initTitle = (pathname) => {
@@ -76,7 +75,7 @@ const Header = () => {
   return (
     <div className="header">
       <div className="header-top">
-        <span className='header-top-hello'>欢迎，{user.nickname}</span>
+        <span className="header-top-hello">欢迎，{user.nickname}</span>
         <Button
           type="primary"
           icon={<PoweroffOutlined/>}
