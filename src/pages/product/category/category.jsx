@@ -4,8 +4,8 @@ import {ArrowRightOutlined, PlusOutlined} from '@ant-design/icons'
 
 import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
 import LinkButton from '../../../components/LinkButton'
-import AddForm from './AddForm'
-import UpdateForm from './UpdateForm'
+import AddForm from './add-form'
+import UpdateForm from './update-form'
 
 const Category = () => {
 
