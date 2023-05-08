@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Card, Select, Input, Button, Table, message} from 'antd'
+import {Button, Card, Input, message, Select, Space, Table} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 
 import {PAGE_SIZE} from '../../../config/baseConfig'
@@ -10,6 +10,8 @@ const ProductHome = () => {
 
   const [total, setTotal] = useState(0)
   const [productList, setProductList] = useState([])
+  const [searchType, setSearchType] = useState('productName')
+  const [searchKeyword, setSearchKeyword] = useState('')
 
   const [columns, setColumns] = useState([])
   const [tableLoading, setTableLoading] = useState(false)
@@ -22,7 +24,7 @@ const ProductHome = () => {
   const queryProductList = (current = 1) => {
     setTableLoading(true)
     reqProductPage({
-      current, pageSize: PAGE_SIZE
+      current, pageSize: PAGE_SIZE, searchKeyword, searchType
     }).then(response => {
       if (response.success) {
         const {total, data} = response
@@ -59,7 +61,7 @@ const ProductHome = () => {
         render: (status) => {
           return (
             <span>
-              <Button type='primary'>下架</Button>
+              <Button type="primary">下架</Button>
               <span>在售</span>
             </span>
           )
@@ -76,23 +78,33 @@ const ProductHome = () => {
             </span>
           )
         }
-      },
+      }
     ])
   }
 
   const title = (
-    <span>
-      <Select value='1' style={{width: 120}}>
-        <Select.Option value='1'>按名称搜索</Select.Option>
-        <Select.Option value='2'>按描述搜索</Select.Option>
+    <Space>
+      <Select
+        value={searchType}
+        onChange={setSearchType}
+        style={{width: 120}}>
+        <Select.Option value="productName">按名称搜索</Select.Option>
+        <Select.Option value="productDesc">按描述搜索</Select.Option>
       </Select>
-      <Input placeholder='关键字' style={{width: 150, margin: '0 15px'}}/>
-      <Button type='primary'>搜索</Button>
-    </span>
+      <Input
+        value={searchKeyword}
+        onChange={(event) => {
+          setSearchKeyword(event.target.value)
+        }}
+        placeholder="关键字"
+        style={{width: 150}}/>
+      <Button type="primary" onClick={() => queryProductList()}>搜索</Button>
+      <Button type="default" onClick={() => setSearchKeyword('')}>重置</Button>
+    </Space>
   )
 
   const extra = (
-    <Button type='primary'>
+    <Button type="primary">
       <PlusOutlined/>
       添加商品
     </Button>

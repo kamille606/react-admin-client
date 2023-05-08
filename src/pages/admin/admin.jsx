@@ -4,7 +4,6 @@ import {Layout, message} from 'antd'
 
 import LeftNav from '../../components/LeftNav'
 import Header from '../../components/Header'
-
 import memoryUtil from '../../utils/memoryUtil'
 
 const {Footer, Sider, Content} = Layout
@@ -16,7 +15,7 @@ const Admin = () => {
   useEffect(() => {
     const user = memoryUtil.user
     if (!user || !user.id) {
-      message.error('暂未登录，返回登录页面')
+      message.error('暂未登录，返回登录页面').then()
       navigateTo('/login', {replace: true})
     }
   }, [navigateTo])
