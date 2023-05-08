@@ -42,7 +42,7 @@ const Header = () => {
       } else {
         message.error('获取天气信息失败').then()
       }
-    }).catch(message.error('获取天气信息失败'))
+    }).catch(err => message.error('获取天气信息失败'))
   }
 
   const initTitle = (pathname) => {

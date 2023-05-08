@@ -4,6 +4,7 @@ export const reqWeatherInfo = () => request('/data/weather')
 
 export const reqUserLogin = async (data) => request('/user/login', data)
 
+export const reqProductPage = (data) => request('/product/page', data)
 export const reqCategoryPage = (parentId) => request('/product/category/page', {parentId})
 export const reqCategoryList = (parentId) => request('/product/category/list', {parentId})
 export const reqCategoryAdd = (parentId, categoryName) => request('/product/category/add', {parentId, categoryName})

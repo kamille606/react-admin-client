@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import {Button, Card, message, Modal, Table} from 'antd'
 import {ArrowRightOutlined, PlusOutlined} from '@ant-design/icons'
 
+import {PAGE_SIZE} from '../../../config/baseConfig'
 import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
 import LinkButton from '../../../components/LinkButton'
 import AddForm from './add-form'
@@ -23,8 +24,8 @@ const Category = () => {
   const updateFormRef = useRef(null)
 
   useEffect(() => {
-    queryCategoryList()
     initTableColumns()
+    queryCategoryList()
   }, [parentId])
 
   const queryCategoryList = () => {
@@ -112,7 +113,6 @@ const Category = () => {
       {
         title: '分类名称',
         dataIndex: 'categoryName',
-        key: 'categoryName'
       },
       {
         title: '操作',
@@ -145,9 +145,9 @@ const Category = () => {
   )
 
   const extra = (
-    <Button onClick={() => showAddCategoryForm()}>
+    <Button type='primary' onClick={() => showAddCategoryForm()}>
       <PlusOutlined/>
-      添加
+      添加分类
     </Button>
   )
 
@@ -160,7 +160,7 @@ const Category = () => {
           rowKey="categoryId"
           pagination={{
             showQuickJumper: true,
-            defaultPageSize: 5
+            defaultPageSize: PAGE_SIZE
           }}
           dataSource={parentId === 0 ? categoryList : subCategoryList}
           columns={columns}/>
