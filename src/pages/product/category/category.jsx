@@ -2,11 +2,11 @@ import React, {useEffect, useRef, useState} from 'react'
 import {Button, Card, message, Modal, Table} from 'antd'
 import {ArrowRightOutlined, PlusOutlined} from '@ant-design/icons'
 
-import {PAGE_SIZE} from '../../../config/baseConfig'
-import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
-import LinkButton from '../../../components/LinkButton'
 import AddForm from './add-form'
 import UpdateForm from './update-form'
+import LinkButton from '../../../components/LinkButton'
+import {PAGE_SIZE} from '../../../config/baseConfig'
+import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
 
 const Category = () => {
 

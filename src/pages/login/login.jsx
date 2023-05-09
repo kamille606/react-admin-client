@@ -2,9 +2,10 @@ import React from 'react'
 import {Navigate, useNavigate} from 'react-router-dom'
 import {Button, Form, Input, message} from 'antd'
 import {LockOutlined, UserOutlined} from '@ant-design/icons'
-import {reqUserLogin} from '../../api'
+
 import memoryUtil from '../../utils/memoryUtil'
 import storageUtil from '../../utils/storageUtil'
+import {reqUserLogin} from '../../api'
 
 import './login.scss'
 

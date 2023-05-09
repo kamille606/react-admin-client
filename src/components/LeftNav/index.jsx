@@ -1,8 +1,8 @@
 import React,{useState} from 'react'
 import {Link, useNavigate, useLocation} from 'react-router-dom'
 import {Menu} from 'antd'
-import {menuItems} from '../../config/menuConfig'
 
+import {menuItems} from '../../config/menuConfig'
 import './index.scss'
 
 const LeftNav = () => {

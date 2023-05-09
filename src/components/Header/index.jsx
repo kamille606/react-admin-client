@@ -5,10 +5,10 @@ import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
 
 import LinkButton from '../LinkButton'
 import {menuItems} from '../../config/menuConfig'
-import {reqWeatherInfo} from '../../api'
 import {formatDate} from '../../utils/dateUtil'
 import memory from '../../utils/memoryUtil'
 import store from '../../utils/storageUtil'
+import {reqWeatherInfo} from '../../api'
 
 import './index.scss'
 
