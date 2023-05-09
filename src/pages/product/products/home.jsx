@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import {Button, Card, Input, message, Select, Space, Table} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 
@@ -6,7 +7,10 @@ import {PAGE_SIZE} from '../../../config/baseConfig'
 import {reqProductPage} from '../../../api'
 import LinkButton from '../../../components/LinkButton'
 
+
 const ProductHome = () => {
+
+  const navigateTo = useNavigate()
 
   const [total, setTotal] = useState(0)
   const [productList, setProductList] = useState([])
@@ -35,6 +39,10 @@ const ProductHome = () => {
       }
     })
     setTableLoading(false)
+  }
+
+  const goProductDetail = (product) => {
+    navigateTo('/product/products/detail', {state: product})
   }
 
   const initTableColumns = () => {
@@ -73,7 +81,7 @@ const ProductHome = () => {
         render: (product) => {
           return (
             <span>
-              <LinkButton>详情</LinkButton>
+              <LinkButton onClick={() => goProductDetail(product)}>详情</LinkButton>
               <LinkButton>修改</LinkButton>
             </span>
           )

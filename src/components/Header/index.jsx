@@ -23,7 +23,6 @@ const Header = () => {
   const [title, setTitle] = useState('')
 
   useEffect(() => {
-    initWeatherInfo()
     initTitle(currentRoute.pathname)
     const id = setInterval(() => {
       setTimeNow(formatDate())
@@ -32,6 +31,10 @@ const Header = () => {
       clearInterval(id)
     }
   }, [currentRoute.pathname])
+
+  useEffect(() => {
+    initWeatherInfo()
+  }, [])
 
   const initWeatherInfo = () => {
     reqWeatherInfo().then(response => {

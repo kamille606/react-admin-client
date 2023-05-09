@@ -3,8 +3,7 @@ import './index.scss'
 
 const LinkButton = (props) => {
   return (
-    <button {...props} className='link-button'>
-    </button>
+    <button {...props} className='link-button'/>
   )
 }
 
