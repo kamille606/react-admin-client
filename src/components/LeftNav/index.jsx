@@ -8,7 +8,13 @@ import './index.scss'
 const LeftNav = () => {
   const navigateTo = useNavigate()
   const currentRoute = useLocation()
-  let firstOpenKey = currentRoute.pathname.split('/')[1]
+  let selectedKey = currentRoute.pathname
+  const firstOpenKey = selectedKey.split('/')[1]
+
+  if (selectedKey.startsWith('/product/products')) {
+    selectedKey = '/product/products'
+  }
+
   const [openKeys, setOpenKeys] = useState(['/' + firstOpenKey]);
 
   const handleClick = (e) => {
@@ -29,7 +35,7 @@ const LeftNav = () => {
         theme="dark"
         items={menuItems}
         openKeys={openKeys}
-        selectedKeys={[currentRoute.pathname]}
+        selectedKeys={[selectedKey]}
         onClick={handleClick}
         onOpenChange={handleOpenChange}
       />

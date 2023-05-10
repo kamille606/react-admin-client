@@ -16,7 +16,7 @@ export const menuItems = [
   getItem('首页', '/home', <HomeOutlined/>),
   getItem('商品', '/product', <AppstoreOutlined/>, [
     getItem('品类管理', '/product/category', <ToolOutlined/>),
-    getItem('商品管理', '/product/products/home', <BarsOutlined/>),
+    getItem('商品管理', '/product/products', <BarsOutlined/>),
   ]),
   getItem('用户管理', '/user', <UserOutlined/>),
   getItem('角色管理', '/role', <SafetyCertificateOutlined/>),

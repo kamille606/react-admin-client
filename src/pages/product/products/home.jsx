@@ -4,7 +4,7 @@ import {Button, Card, Input, message, Select, Space, Table} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 
 import LinkButton from '../../../components/LinkButton'
-import {PAGE_SIZE} from '../../../config/baseConfig'
+import {DEFAULT_CURRENT, EMPTY, PAGE_SIZE} from '../../../config/baseConfig'
 import {reqProductOffShelf, reqProductOnSell, reqProductPage} from '../../../api'
 
 const ProductHome = () => {
@@ -13,28 +13,20 @@ const ProductHome = () => {
 
   const [productList, setProductList] = useState([])
   const [searchType, setSearchType] = useState('productName')
-  const [searchKeyword, setSearchKeyword] = useState('')
-
-  const [total, setTotal] = useState(1)
-  const [current, setCurrent] = useState(1)
-  const [columns, setColumns] = useState([])
+  const [searchKeyword, setSearchKeyword] = useState(EMPTY)
+  const [total, setTotal] = useState(0)
+  const [current, setCurrent] = useState(DEFAULT_CURRENT)
   const [tableLoading, setTableLoading] = useState(false)
 
   useEffect(() => {
-    initTableColumns()
     queryProductList(current)
   }, [])
 
-  useEffect(() => {
-    console.log('监听', current)
-  }, [current])
-
   const queryProductList = (reqCurrent) => {
-    console.log('',reqCurrent)
     setCurrent(reqCurrent)
     setTableLoading(true)
     reqProductPage({
-      current: reqCurrent, pageSize: 2, searchKeyword, searchType
+      current: reqCurrent, pageSize: PAGE_SIZE, searchKeyword, searchType
     }).then(response => {
       if (response.success) {
         const {total, data} = response
@@ -51,8 +43,7 @@ const ProductHome = () => {
     navigateTo('/product/products/detail', {state: product})
   }
 
-  const updateProductStatus = async (product) => {
-    console.log('修改前', aaaa)
+  const operateProduct = async (product) => {
     let response
     switch (product.status) {
       case 1:
@@ -67,61 +58,58 @@ const ProductHome = () => {
     if (response.success) {
       message.success('操作成功')
       queryProductList(current)
-      console.log('修改后', current)
     } else {
       message.error(response.success)
     }
   }
 
-  const initTableColumns = () => {
-    setColumns([
-      {
-        title: '商品名称',
-        dataIndex: 'productName',
-        width: 130
-      },
-      {
-        title: '商品描述',
-        dataIndex: 'productDesc'
-      },
-      {
-        title: '价格',
-        dataIndex: 'price',
-        width: 100,
-        render: (price) => '￥' + price
-      },
-      {
-        title: '状态',
-        width: 100,
-        render: (product) => {
-          const {status} = product
-          return (
-            <span>
-              <Button
-                type="primary"
-                danger={status === 1}
-                onClick={() => updateProductStatus(product)}>
-                {status === 1 ? '下架' : '上架'}
-              </Button>
-              <span>{status === 1 ? '在售' : '已下架'}</span>
-            </span>
-          )
-        }
-      },
-      {
-        title: '操作',
-        width: 100,
-        render: (product) => {
-          return (
-            <span>
-              <LinkButton onClick={() => goProductDetail(product)}>详情</LinkButton>
-              <LinkButton>修改</LinkButton>
-            </span>
-          )
-        }
+  const columns = [
+    {
+      title: '商品名称',
+      dataIndex: 'productName',
+      width: 130
+    },
+    {
+      title: '商品描述',
+      dataIndex: 'productDesc'
+    },
+    {
+      title: '价格',
+      dataIndex: 'price',
+      width: 100,
+      render: (price) => '￥' + price
+    },
+    {
+      title: '状态',
+      width: 100,
+      render: (product) => {
+        const {status} = product
+        return (
+          <span>
+            <Button
+              type="primary"
+              danger={status === 1}
+              onClick={() => operateProduct(product)}>
+              {status === 1 ? '下架' : '上架'}
+            </Button>
+            <span>{status === 1 ? '在售' : '已下架'}</span>
+          </span>
+        )
       }
-    ])
-  }
+    },
+    {
+      title: '操作',
+      width: 100,
+      render: (product) => {
+        return (
+          <span>
+            <LinkButton onClick={() => goProductDetail(product)}>详情</LinkButton>
+            <LinkButton>修改</LinkButton>
+          </span>
+        )
+      }
+    }
+  ]
 
   const title = (
     <Space>
@@ -140,7 +128,7 @@ const ProductHome = () => {
         placeholder="关键字"
         style={{width: 150}}/>
       <Button type="primary" onClick={() => queryProductList(current)}>搜索</Button>
-      <Button type="default" onClick={() => setSearchKeyword('')}>重置</Button>
+      <Button type="default" onClick={() => setSearchKeyword(EMPTY)}>重置</Button>
     </Space>
   )
 
@@ -166,7 +154,6 @@ const ProductHome = () => {
         }}
         dataSource={productList}
         columns={columns}>
-
       </Table>
     </Card>
   )

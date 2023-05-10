@@ -7,7 +7,6 @@ import bg from '../../../assets/images/bg.jpeg'
 import LinkButton from '../../../components/LinkButton'
 import {reqCategoryInfo} from '../../../api'
 
-
 const ProductDetail = () => {
 
   const location = useLocation();
