@@ -5,13 +5,13 @@ import {ArrowRightOutlined, PlusOutlined} from '@ant-design/icons'
 import AddForm from './add-form'
 import UpdateForm from './update-form'
 import LinkButton from '../../../components/LinkButton'
-import {PAGE_SIZE} from '../../../config/baseConfig'
+import {EMPTY, PAGE_SIZE} from '../../../config/baseConfig'
 import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
 
 const Category = () => {
 
   const [parentId, setParentId] = useState(0)
-  const [parentName, setParentName] = useState('')
+  const [parentName, setParentName] = useState(EMPTY)
   const [category, setCategory] = useState({})
   const [categoryList, setCategoryList] = useState([])
   const [subCategoryList, setSubCategoryList] = useState([])
@@ -47,7 +47,7 @@ const Category = () => {
 
   const showFirstCategoryList = () => {
     setParentId(0)
-    setParentName('')
+    setParentName(EMPTY)
     setSubCategoryList([])
   }
 

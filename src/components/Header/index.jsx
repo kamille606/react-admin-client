@@ -4,10 +4,11 @@ import {Button, message, Modal} from 'antd'
 import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
 
 import LinkButton from '../LinkButton'
-import {menuItems} from '../../config/menuConfig'
 import {formatDate} from '../../utils/dateUtil'
 import memory from '../../utils/memoryUtil'
 import store from '../../utils/storageUtil'
+import {EMPTY} from '../../config/baseConfig'
+import {menuItems} from '../../config/menuConfig'
 import {reqWeatherInfo} from '../../api'
 
 import './index.scss'
@@ -16,11 +17,11 @@ const Header = () => {
 
   const navigate = useNavigate()
   const currentRoute = useLocation()
-  const [weatherNow, setWeatherNow] = useState('')
-  const [temperature, setTemperature] = useState('')
+  const [weatherNow, setWeatherNow] = useState(EMPTY)
+  const [temperature, setTemperature] = useState(EMPTY)
   const [timeNow, setTimeNow] = useState(formatDate())
   const [user] = useState(memory.user)
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(EMPTY)
 
   useEffect(() => {
     initTitle(currentRoute.pathname)
