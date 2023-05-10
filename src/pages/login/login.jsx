@@ -56,10 +56,10 @@ const Login = () => {
   return (
     <div className='login'>
       <header className='login-header'>
-        <h1>{'后台管理项目'}</h1>
+        <h1>后台管理项目</h1>
       </header>
       <section className='login-content'>
-        <h2>{'用户登录'}</h2>
+        <h2>用户登录</h2>
         <div>
           <Form name='normal_login' className='login-form' onFinish={onFinish}>
             <Form.Item name='username' rules={usernameRules}>
