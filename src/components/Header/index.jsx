@@ -14,7 +14,7 @@ import './index.scss'
 
 const Header = () => {
 
-  const navigateTo = useNavigate()
+  const navigate = useNavigate()
   const currentRoute = useLocation()
   const [weatherNow, setWeatherNow] = useState('')
   const [temperature, setTemperature] = useState('')
@@ -68,7 +68,7 @@ const Header = () => {
       onOk() {
         store.removeUser()
         memory.user = {}
-        navigateTo('/login', {replace: true})
+        navigate('/login', {replace: true})
       },
       okText: '退出',
       cancelText: '取消'

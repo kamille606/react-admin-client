@@ -10,15 +10,15 @@ const {Footer, Sider, Content} = Layout
 
 const Admin = () => {
 
-  const navigateTo = useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const user = memoryUtil.user
     if (!user || !user.id) {
       message.error('暂未登录，返回登录页面').then()
-      navigateTo('/login', {replace: true})
+      navigate('/login', {replace: true})
     }
-  }, [navigateTo])
+  }, [navigate])
 
   return (
     <Layout style={{minHeight: '100vh'}}>

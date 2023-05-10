@@ -3,10 +3,13 @@ import {useNavigate} from 'react-router-dom'
 import {Button, Result} from 'antd'
 
 const NotFound = () => {
-  const navigateTo = useNavigate()
+
+  const navigate = useNavigate()
+
   const handleClick = () => {
-    navigateTo('/')
+    navigate('/')
   }
+
   return (
     <Result
       status="404"

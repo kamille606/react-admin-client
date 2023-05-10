@@ -9,7 +9,7 @@ import {reqProductOffShelf, reqProductOnSell, reqProductPage} from '../../../api
 
 const ProductHome = () => {
 
-  const navigateTo = useNavigate()
+  const navigate = useNavigate()
 
   const [productList, setProductList] = useState([])
   const [searchType, setSearchType] = useState('productName')
@@ -19,7 +19,7 @@ const ProductHome = () => {
   const [tableLoading, setTableLoading] = useState(false)
 
   useEffect(() => {
-    queryProductList(current)
+    queryProductList(DEFAULT_CURRENT)
   }, [])
 
   const queryProductList = (reqCurrent) => {
@@ -40,7 +40,7 @@ const ProductHome = () => {
   }
 
   const goProductDetail = (product) => {
-    navigateTo('/product/products/detail', {state: product})
+    navigate('/product/products/detail', {state: product})
   }
 
   const operateProduct = async (product) => {
@@ -133,7 +133,7 @@ const ProductHome = () => {
   )
 
   const extra = (
-    <Button type="primary">
+    <Button type="primary" onClick={() => navigate('/product/products/add-update')}>
       <PlusOutlined/>
       添加商品
     </Button>

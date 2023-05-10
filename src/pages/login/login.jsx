@@ -11,7 +11,7 @@ import './login.scss'
 
 const Login = () => {
 
-  const navigateTo = useNavigate()
+  const navigate = useNavigate()
   const user = memoryUtil.user
 
   if (user && user.id) {
@@ -25,7 +25,7 @@ const Login = () => {
       const user = response.data
       memoryUtil.user = user
       storageUtil.setUser(user)
-      navigateTo('/', {replace: true})
+      navigate('/', {replace: true})
     } else {
       message.error(response.message)
     }

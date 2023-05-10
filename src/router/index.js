@@ -68,7 +68,7 @@ const routes = [
             element: withLoading(<ProductDetail/>)
           },
           {
-            path: 'add',
+            path: 'add-update',
             element: withLoading(<ProductAddUpdate/>)
           }
         ]
