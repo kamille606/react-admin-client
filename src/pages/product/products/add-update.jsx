@@ -1,13 +1,25 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useLayoutEffect, useState} from 'react'
 import {Card, Cascader, Upload, Button, Form, Input, InputNumber, message} from 'antd'
 
 import ArrowTitle from '../../../components/ArrowTitle'
 import {reqCategoryList} from '../../../api'
+import {useLocation} from 'react-router-dom'
 
 const ProductAddUpdate = () => {
 
+  const location = useLocation()
   const [form] = Form.useForm()
+
+  const [isUpdate, setIsUpdate] = useState(false)
+  const [product, setProduct] = useState({})
+
   const [categoryOptions, setCategoryOptions] = useState([])
+
+  useLayoutEffect(() => {
+    const product = location.state
+    setIsUpdate(!!product)
+    setProduct(product || {})
+  }, [])
 
   useEffect(() => {
     getCategoryOptions(0).then(options => {
@@ -53,11 +65,11 @@ const ProductAddUpdate = () => {
 
   const formItemLayout = {
     labelCol: {span: 3},
-    wrapperCol: {span: 10}
+    wrapperCol: {span: 6}
   }
 
   return (
-    <Card title={<ArrowTitle>添加商品</ArrowTitle>}>
+    <Card title={<ArrowTitle>{isUpdate ? '修改商品' : '添加商品'}</ArrowTitle>}>
       <Form
         {...formItemLayout}
         form={form}>
@@ -83,7 +95,7 @@ const ProductAddUpdate = () => {
           ]}>
           <InputNumber placeholder="请输入商品价格" addonAfter="元"/>
         </Form.Item>
-        <Form.Item label="商品分类">
+        <Form.Item label="商品分类" name='categoryIds'>
           <Cascader
             options={categoryOptions}
             loadData={loadCategoryData}/>

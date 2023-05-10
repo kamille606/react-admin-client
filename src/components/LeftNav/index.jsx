@@ -6,16 +6,16 @@ import {menuItems} from '../../config/menuConfig'
 import './index.scss'
 
 const LeftNav = () => {
+
   const navigate = useNavigate()
   const currentRoute = useLocation()
   let selectedKey = currentRoute.pathname
   const firstOpenKey = selectedKey.split('/')[1]
+  const [openKeys, setOpenKeys] = useState(['/' + firstOpenKey])
 
   if (selectedKey.startsWith('/product/products')) {
     selectedKey = '/product/products'
   }
-
-  const [openKeys, setOpenKeys] = useState(['/' + firstOpenKey])
 
   const handleClick = (e) => {
     navigate(e.key)

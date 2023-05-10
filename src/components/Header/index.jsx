@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useLayoutEffect, useState} from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {Button, message, Modal} from 'antd'
 import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
@@ -16,22 +16,22 @@ import './index.scss'
 const Header = () => {
 
   const navigate = useNavigate()
-  const currentRoute = useLocation()
+  const location = useLocation()
   const [weatherNow, setWeatherNow] = useState(EMPTY)
   const [temperature, setTemperature] = useState(EMPTY)
   const [timeNow, setTimeNow] = useState(formatDate())
   const [user] = useState(memory.user)
   const [title, setTitle] = useState(EMPTY)
 
-  useEffect(() => {
-    initTitle(currentRoute.pathname)
+  useLayoutEffect(() => {
+    initTitle(location.pathname)
     const id = setInterval(() => {
       setTimeNow(formatDate())
     }, 1000)
     return () => {
       clearInterval(id)
     }
-  }, [currentRoute.pathname])
+  }, [location.pathname])
 
   useEffect(() => {
     initWeatherInfo()
@@ -60,6 +60,9 @@ const Header = () => {
         }
       }
     })
+    if (pathname.startsWith('/product/products')){
+      setTitle('商品管理')
+    }
   }
 
   const logout = () => {

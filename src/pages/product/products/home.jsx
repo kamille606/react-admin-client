@@ -43,6 +43,10 @@ const ProductHome = () => {
     navigate('/product/products/detail', {state: product})
   }
 
+  const goProductUpdate = (product) => {
+    navigate('/product/products/add-update', {state: product})
+  }
+
   const operateProduct = async (product) => {
     let response
     switch (product.status) {
@@ -104,7 +108,7 @@ const ProductHome = () => {
         return (
           <span>
             <LinkButton onClick={() => goProductDetail(product)}>详情</LinkButton>
-            <LinkButton>修改</LinkButton>
+            <LinkButton onClick={() => goProductUpdate(product)}>修改</LinkButton>
           </span>
         )
       }
