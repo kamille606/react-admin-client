@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Card, Cascader, Upload, Button, Form, Input, InputNumber, message} from 'antd'
 
 import ArrowTitle from '../../../components/ArrowTitle'
@@ -15,43 +15,53 @@ const ProductAddUpdate = () => {
 
   const [categoryOptions, setCategoryOptions] = useState([])
 
-  useLayoutEffect(() => {
-    const product = location.state
-    setIsUpdate(!!product)
-    setProduct(product || {})
-  }, [])
-
   useEffect(() => {
-    getCategoryOptions(0).then(options => {
+    getCategoryOptions().then(options => {
       setCategoryOptions(options)
     })
-  }, [])
+    initFormData()
+  },[])
 
-  const getCategoryOptions = async (parentId) => {
-    const response = await reqCategoryList(parentId)
+  const initFormData = () => {
+    const product = location.state
+    if (product) {
+      setIsUpdate(!!product)
+      const {categoryPid, categoryId} = product
+      form.setFieldsValue({
+        productName: product.productName,
+        productDesc: product.productDesc,
+        price: product.price,
+        categoryIds: [categoryPid, categoryId]
+      })
+      setProduct(product)
+    }
+  }
+
+  function buildOptionTree(list, parentId) {
+    const tree = [];
+    for (const one of list) {
+      if (one.parentId === parentId) {
+        const child = buildOptionTree(list, one.categoryId);
+        const node = {
+          value: one.categoryId,
+          label: one.categoryName,
+          children: child,
+          isLeaf: child.length <= 0
+        };
+        tree.push(node);
+      }
+    }
+    return tree;
+  }
+
+  const getCategoryOptions = async () => {
+    const response = await reqCategoryList(null)
     if (response.success) {
-      return response.data.map(category => ({
-        value: category.categoryId,
-        label: category.categoryName,
-        isLeaf: false
-      }))
+      return buildOptionTree(response.data, 0)
     } else {
       message.error(response.message).then()
       return []
     }
-  }
-
-  const loadCategoryData = async (selectedOptions) => {
-    const targetOption = selectedOptions[selectedOptions.length - 1]
-    targetOption.loading = true
-    const options = await getCategoryOptions(targetOption.value)
-    if (options && options.length > 0) {
-      targetOption.children = options
-    } else {
-      targetOption.isLeaf = true
-    }
-    targetOption.loading = false
-    setCategoryOptions([...categoryOptions])
   }
 
   const submit = async () => {
@@ -63,15 +73,11 @@ const ProductAddUpdate = () => {
     }
   }
 
-  const formItemLayout = {
-    labelCol: {span: 3},
-    wrapperCol: {span: 6}
-  }
-
   return (
     <Card title={<ArrowTitle>{isUpdate ? '修改商品' : '添加商品'}</ArrowTitle>}>
       <Form
-        {...formItemLayout}
+        labelCol={{span:3}}
+        wrapperCol={{span:6}}
         form={form}>
         <Form.Item
           label="商品名称" name="productName"
@@ -97,8 +103,7 @@ const ProductAddUpdate = () => {
         </Form.Item>
         <Form.Item label="商品分类" name='categoryIds'>
           <Cascader
-            options={categoryOptions}
-            loadData={loadCategoryData}/>
+            options={categoryOptions}/>
         </Form.Item>
         <Form.Item label="商品图片">
           <div>商品图片</div>

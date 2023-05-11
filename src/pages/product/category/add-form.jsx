@@ -21,7 +21,12 @@ const AddForm = (props, ref) => {
   }, [parentId])
 
   return (
-    <Form form={form} initialValues={{parentId: '0', categoryName: ''}}>
+    <Form
+      form={form}
+      initialValues={{
+        parentId: '0',
+        categoryName: ''
+      }}>
       <Form.Item name="parentId">
         <Select>
           <Select.Option key="0" value="0">一级分类</Select.Option>
