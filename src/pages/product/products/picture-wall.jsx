@@ -89,7 +89,11 @@ const PictureWall = () => {
       >
         {fileList.length >= 8 ? null : uploadButton}
       </Upload>
-      <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+      <Modal
+        open={previewOpen}
+        title={previewTitle}
+        footer={null}
+        onCancel={handleCancel}>
         <img
           alt="example"
           style={{
