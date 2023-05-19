@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {Modal, Upload} from 'antd'
+import {message, Modal, Upload} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 
 const getBase64 = (file) =>
@@ -18,24 +18,6 @@ const PictureWall = () => {
   const [fileList, setFileList] = useState([
     {
       uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-2',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-3',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-4',
       name: 'image.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
@@ -63,7 +45,24 @@ const PictureWall = () => {
     setPreviewOpen(true)
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
-  const handleChange = ({fileList: newFileList}) => setFileList(newFileList)
+  const handleChange = ({file, fileList, event}) => {
+    console.log(fileList)
+    if (file.status === 'done') {
+      const {response} = file
+      if (response.success) {
+        message.success('上传图片成功').then()
+        const {url, name} = response.data
+        file.url = url
+        file.name = name
+      } else {
+        message.error(response.message).then()
+        file.status = 'error'
+      }
+    }
+    fileList[fileList.length - 1] = file
+    setFileList(fileList)
+  }
+
   const uploadButton = (
     <div>
       <PlusOutlined/>
