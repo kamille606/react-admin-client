@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useLocation} from 'react-router-dom'
 import {Card, Cascader, Button, Form, Input, InputNumber, message} from 'antd'
 
@@ -12,6 +12,7 @@ const ProductAddUpdate = () => {
 
   const location = useLocation()
   const [form] = Form.useForm()
+  const pictureRef = useRef(null)
 
   const [isUpdate, setIsUpdate] = useState(false)
   const [product, setProduct] = useState({})
@@ -69,7 +70,10 @@ const ProductAddUpdate = () => {
   const submit = async () => {
     try {
       const values = await form.validateFields()
+      const imageFiles = pictureRef.current.getImageFiles()
       console.log(values)
+      console.log(imageFiles)
+
     } catch (err) {
       console.log(err)
     }
@@ -125,8 +129,10 @@ const ProductAddUpdate = () => {
             options={categoryOptions}/>
         </Item>
 
-        <Item label="商品图片">
-          <PictureWall/>
+        <Item
+          label="商品图片"
+          name='images'>
+          <PictureWall ref={pictureRef}/>
         </Item>
 
         <Item label="商品详情">

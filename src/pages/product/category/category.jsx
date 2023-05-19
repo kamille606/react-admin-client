@@ -10,6 +10,9 @@ import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
 
 const Category = () => {
 
+  const addFormRef = useRef(null)
+  const updateFormRef = useRef(null)
+
   const [parentId, setParentId] = useState(0)
   const [parentName, setParentName] = useState(EMPTY)
   const [category, setCategory] = useState({})
@@ -19,9 +22,6 @@ const Category = () => {
   const [columns, setColumns] = useState([])
   const [tableLoading, setTableLoading] = useState(false)
   const [showStatus, setShowStatus] = useState(0)
-
-  const addFormRef = useRef(null)
-  const updateFormRef = useRef(null)
 
   useEffect(() => {
     initTableColumns()

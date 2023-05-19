@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {forwardRef, useImperativeHandle, useState} from 'react'
 import {message, Modal, Upload} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 
@@ -10,32 +10,20 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error)
   })
 
-const PictureWall = () => {
+const PictureWall = (props, ref) => {
 
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
-  const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-xxx',
-      percent: 50,
-      name: 'image.png',
-      status: 'uploading',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-5',
-      name: 'image.png',
-      status: 'error'
-    }
-  ])
+  const [fileList, setFileList] = useState([])
 
+  useImperativeHandle(ref, () => ({
+    getImageFiles: getImageFiles
+  }))
+
+  const getImageFiles = () => {
+    return fileList.map(file => file.name)
+  }
   const handleCancel = () => setPreviewOpen(false)
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -46,7 +34,6 @@ const PictureWall = () => {
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
   const handleChange = ({file, fileList, event}) => {
-    console.log(fileList)
     if (file.status === 'done') {
       const {response} = file
       if (response.success) {
@@ -105,4 +92,4 @@ const PictureWall = () => {
   )
 }
 
-export default PictureWall
+export default forwardRef(PictureWall)
