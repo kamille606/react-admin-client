@@ -4,6 +4,7 @@ import {Card, Cascader, Button, Form, Input, InputNumber, message} from 'antd'
 
 import ArrowTitle from '../../../components/ArrowTitle'
 import PictureWall from './picture-wall'
+import RichTextEdit from './rich-text-edit'
 import {reqCategoryList} from '../../../api'
 
 const {Item} = Form
@@ -13,6 +14,7 @@ const ProductAddUpdate = () => {
   const location = useLocation()
   const [form] = Form.useForm()
   const pictureRef = useRef(null)
+  const richTextRef = useRef(null)
 
   const [isUpdate, setIsUpdate] = useState(false)
   const [product, setProduct] = useState({})
@@ -29,13 +31,14 @@ const ProductAddUpdate = () => {
     const product = location.state
     if (product) {
       setIsUpdate(!!product)
-      const {categoryPid, categoryId} = product
       form.setFieldsValue({
         productName: product.productName,
         productDesc: product.productDesc,
         price: product.price,
-        categoryIds: [categoryPid, categoryId]
+        categoryIds: [product.categoryPid, product.categoryId],
       })
+      pictureRef.current.setImages(product.images)
+      richTextRef.current.setRichText(product.productDetail)
       setProduct(product)
     }
   }
@@ -70,10 +73,11 @@ const ProductAddUpdate = () => {
   const submit = async () => {
     try {
       const values = await form.validateFields()
-      const imageFiles = pictureRef.current.getImageFiles()
+      const images = pictureRef.current.getImages()
+      const detail = richTextRef.current.getRichText()
       console.log(values)
-      console.log(imageFiles)
-
+      console.log(images)
+      console.log(detail)
     } catch (err) {
       console.log(err)
     }
@@ -132,15 +136,18 @@ const ProductAddUpdate = () => {
         <Item
           label="商品图片"
           name='images'>
-          <PictureWall ref={pictureRef}/>
+          <PictureWall ref={pictureRef} images={product.images}/>
         </Item>
 
-        <Item label="商品详情">
-          <div>商品详情</div>
+        <Item
+          label="商品详情"
+          name='productDetail'
+          wrapperCol={{span: 15}}>
+          <RichTextEdit ref={richTextRef}/>
         </Item>
 
         <Item>
-          <Button type="primary" onClick={submit}></Button>
+          <Button type="primary" onClick={submit}>提交</Button>
         </Item>
       </Form>
     </Card>

@@ -1,6 +1,8 @@
-import {forwardRef, useImperativeHandle, useState} from 'react'
+import {forwardRef, useEffect, useImperativeHandle, useState} from 'react'
 import {message, Modal, Upload} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
+
+import {BASE_IMG_URL} from '../../../config/baseConfig'
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -18,12 +20,30 @@ const PictureWall = (props, ref) => {
   const [fileList, setFileList] = useState([])
 
   useImperativeHandle(ref, () => ({
-    getImageFiles: getImageFiles
+    getImages,
+    setImages
   }))
 
-  const getImageFiles = () => {
+  useEffect(() => {
+    const images = props.images
+    if (images) {
+      setImages(images)
+    }
+  }, [props.images])
+
+  const getImages = () => {
     return fileList.map(file => file.name)
   }
+  const setImages = (images) => {
+    const fileList = images.split(',').map((img, index) => ({
+      uid: -index,
+      name: img,
+      status: 'done',
+      url: BASE_IMG_URL + img
+    }))
+    setFileList(fileList)
+  }
+
   const handleCancel = () => setPreviewOpen(false)
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -34,6 +54,7 @@ const PictureWall = (props, ref) => {
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
   const handleChange = ({file, fileList, event}) => {
+    console.log(fileList)
     if (file.status === 'done') {
       const {response} = file
       if (response.success) {
@@ -66,7 +87,7 @@ const PictureWall = (props, ref) => {
   return (
     <>
       <Upload
-        action="/api/data/upload/picture"
+        action="/api/manage/upload"
         listType="picture-card"
         accept="image/*"
         fileList={fileList}

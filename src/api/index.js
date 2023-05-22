@@ -1,6 +1,6 @@
 import request from './request'
 
-export const reqWeatherInfo = () => request('/data/weather')
+export const reqWeatherInfo = () => request('/manage/weather')
 
 export const reqUserLogin = async (data) => request('/user/login', data)
 
