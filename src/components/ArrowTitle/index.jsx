@@ -5,9 +5,7 @@ import {ArrowLeftOutlined} from '@ant-design/icons'
 import LinkButton from '../LinkButton'
 
 const ArrowTitle = (props) => {
-
   const navigate = useNavigate()
-
   return (
     <span>
       <LinkButton onClick={() => navigate(-1)}>

@@ -2,9 +2,9 @@ import React, {useEffect, useRef, useState} from 'react'
 import {Button, Card, message, Modal, Table} from 'antd'
 import {ArrowRightOutlined, PlusOutlined} from '@ant-design/icons'
 
+import LinkButton from '../../../components/LinkButton'
 import AddForm from './add-form'
 import UpdateForm from './update-form'
-import LinkButton from '../../../components/LinkButton'
 import {EMPTY, PAGE_SIZE} from '../../../config/baseConfig'
 import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
 
@@ -82,7 +82,7 @@ const Category = () => {
         message.error(response.message)
       }
     } catch (err) {
-      console.log('校验失败')
+      console.log(err)
     }
   }
 
@@ -104,7 +104,7 @@ const Category = () => {
         }
       }
     } catch (err) {
-      console.log('校验失败')
+      console.log(err)
     }
   }
 

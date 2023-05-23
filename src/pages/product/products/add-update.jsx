@@ -3,9 +3,9 @@ import {useLocation} from 'react-router-dom'
 import {Button, Card, Cascader, Form, Input, InputNumber, message} from 'antd'
 
 import ArrowTitle from '../../../components/ArrowTitle'
-import PictureWall from './picture-wall'
-import RichTextEdit from './rich-text-edit'
-import {reqCategoryAdd, reqCategoryList, reqProductAdd, reqProductUpdate} from '../../../api'
+import RichTextEdit from '../../../components/RichTextEdit'
+import PictureWall from '../../../components/PictureWall'
+import {reqCategoryList, reqProductAdd, reqProductUpdate} from '../../../api'
 
 const {Item} = Form
 
@@ -108,14 +108,13 @@ const ProductAddUpdate = () => {
       if (isUpdate) {
         response = await reqProductUpdate(newProduct)
       } else {
-        response = await reqCategoryAdd(newProduct)
+        response = await reqProductAdd(newProduct)
       }
       if (response.success) {
         message.success(isUpdate ? '更新成功' : '新增成功').then()
       } else {
         message.error(response.message).then()
       }
-      console.log(newProduct, response)
     } catch (err) {
       console.log(err)
     }

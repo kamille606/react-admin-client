@@ -2,7 +2,7 @@ import {forwardRef, useEffect, useImperativeHandle, useState} from 'react'
 import {message, Modal, Upload} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 
-import {BASE_IMG_URL} from '../../../config/baseConfig'
+import {BASE_IMG_URL} from '../../config/baseConfig'
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -52,7 +52,6 @@ const PictureWall = (props, ref) => {
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
   const handleChange = ({file, fileList}) => {
-    console.log(fileList)
     if (file.status === 'done') {
       const {response} = file
       if (response.success) {
