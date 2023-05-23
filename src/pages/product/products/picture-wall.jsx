@@ -51,7 +51,7 @@ const PictureWall = (props, ref) => {
     setPreviewOpen(true)
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
-  const handleChange = ({file, fileList, event}) => {
+  const handleChange = ({file, fileList}) => {
     console.log(fileList)
     if (file.status === 'done') {
       const {response} = file
