@@ -16,11 +16,11 @@ const RichTextEdit = (props, ref) => {
   }))
 
   useEffect(() => {
-    const productDetail = props.productDetail
-    if (productDetail) {
-      setRichText(props.productDetail)
+    const richText = props.richText
+    if (richText) {
+      setRichText(props.richText)
     }
-  }, [props.productDetail])
+  }, [props.richText])
 
   const getRichText = () => {
     const currentContent = editorState.getCurrentContent()

@@ -9,8 +9,9 @@ export const reqProductPage = (data) => request('/product/page', {
 })
 export const reqProductOnSell = (productId) => request('/product/on-sell', {productId})
 export const reqProductOffShelf = (productId) => request('/product/off-shelf', {productId})
+export const reqProductAdd = (product) => request('/product/add', product)
+export const reqProductUpdate = (product) => request('/product/update', product)
 
-export const reqCategoryPage = (categoryPid) => request('/product/category/page', {categoryPid})
 export const reqCategoryList = (categoryPid) => request('/product/category/list', {categoryPid})
 export const reqCategoryInfo = (categoryId) => request('/product/category/info', {categoryId})
 export const reqCategoryAdd = (categoryPid, categoryName) => request('/product/category/add', {categoryPid, categoryName})

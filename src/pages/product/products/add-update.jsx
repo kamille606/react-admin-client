@@ -5,7 +5,7 @@ import {Button, Card, Cascader, Form, Input, InputNumber, message} from 'antd'
 import ArrowTitle from '../../../components/ArrowTitle'
 import PictureWall from './picture-wall'
 import RichTextEdit from './rich-text-edit'
-import {reqCategoryList} from '../../../api'
+import {reqCategoryAdd, reqCategoryList, reqProductAdd, reqProductUpdate} from '../../../api'
 
 const {Item} = Form
 
@@ -38,17 +38,23 @@ const ProductAddUpdate = () => {
     const product = location.state
     if (product) {
       setIsUpdate(!!product)
+      let categoryIds
+      if (product.categoryPid === 0) {
+        categoryIds = [product.categoryId]
+      } else {
+        categoryIds = [product.categoryPid, product.categoryId]
+      }
       form.setFieldsValue({
         productName: product.productName,
         productDesc: product.productDesc,
         productPrice: product.productPrice,
-        categoryIds: [product.categoryPid, product.categoryId]
+        categoryIds: categoryIds
       })
       setProduct(product)
     }
   }
 
-  function buildOptionTree(list, categoryPid) {
+  const buildOptionTree = (list, categoryPid) => {
     const tree = []
     for (const one of list) {
       if (one.categoryPid === categoryPid) {
@@ -78,11 +84,38 @@ const ProductAddUpdate = () => {
   const submit = async () => {
     try {
       const values = await form.validateFields()
-      const images = pictureRef.current.getImages()
-      const detail = richTextRef.current.getRichText()
-      console.log(values)
-      console.log(images)
-      console.log(detail)
+      const {categoryIds, productName, productDesc, productPrice} = values
+      let categoryPid, categoryId
+      if (categoryIds.length === 1) {
+        categoryPid = 0
+        categoryId = categoryIds[0]
+      } else {
+        categoryPid = categoryIds[0]
+        categoryId = categoryIds[1]
+      }
+      const newProduct = {
+        productId: product.productId,
+        productName,
+        productDesc,
+        productPrice,
+        categoryPid,
+        categoryId,
+        productImages: pictureRef.current.getImages().join(','),
+        productDetail: richTextRef.current.getRichText()
+      }
+
+      let response
+      if (isUpdate) {
+        response = await reqProductUpdate(newProduct)
+      } else {
+        response = await reqCategoryAdd(newProduct)
+      }
+      if (response.success) {
+        message.success(isUpdate ? '更新成功' : '新增成功').then()
+      } else {
+        message.error(response.message).then()
+      }
+      console.log(newProduct, response)
     } catch (err) {
       console.log(err)
     }
