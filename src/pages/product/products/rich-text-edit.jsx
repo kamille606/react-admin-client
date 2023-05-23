@@ -1,5 +1,5 @@
-import React, {forwardRef, useImperativeHandle} from 'react'
-import {EditorState, convertToRaw} from 'draft-js'
+import React, {forwardRef, useEffect, useImperativeHandle} from 'react'
+import {convertToRaw, EditorState} from 'draft-js'
 import ContentState from 'draft-js/lib/ContentState'
 import {Editor} from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
@@ -12,9 +12,15 @@ const RichTextEdit = (props, ref) => {
   const [editorState, setEditorState] = React.useState(EditorState.createEmpty())
 
   useImperativeHandle(ref, () => ({
-    getRichText,
-    setRichText
+    getRichText
   }))
+
+  useEffect(() => {
+    const productDetail = props.productDetail
+    if (productDetail) {
+      setRichText(props.productDetail)
+    }
+  }, [props.productDetail])
 
   const getRichText = () => {
     const currentContent = editorState.getCurrentContent()
@@ -24,8 +30,8 @@ const RichTextEdit = (props, ref) => {
   const setRichText = (html) => {
     const contentBlock = htmlToDraft(html)
     if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      const editorState = EditorState.createWithContent(contentState);
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks)
+      const editorState = EditorState.createWithContent(contentState)
       setEditorState(editorState)
     }
   }

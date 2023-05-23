@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {useLocation} from 'react-router-dom'
-import {Card, Cascader, Button, Form, Input, InputNumber, message} from 'antd'
+import {Button, Card, Cascader, Form, Input, InputNumber, message} from 'antd'
 
 import ArrowTitle from '../../../components/ArrowTitle'
 import PictureWall from './picture-wall'
@@ -17,7 +17,14 @@ const ProductAddUpdate = () => {
   const richTextRef = useRef(null)
 
   const [isUpdate, setIsUpdate] = useState(false)
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState({
+    productName: undefined,
+    productDesc: undefined,
+    productDetail: undefined,
+    productImages: undefined,
+    categoryPid: undefined,
+    categoryId: undefined
+  })
   const [categoryOptions, setCategoryOptions] = useState([])
 
   useEffect(() => {
@@ -34,19 +41,17 @@ const ProductAddUpdate = () => {
       form.setFieldsValue({
         productName: product.productName,
         productDesc: product.productDesc,
-        price: product.price,
-        categoryIds: [product.categoryPid, product.categoryId],
+        productPrice: product.productPrice,
+        categoryIds: [product.categoryPid, product.categoryId]
       })
-      pictureRef.current.setImages(product.images)
-      richTextRef.current.setRichText(product.productDetail)
       setProduct(product)
     }
   }
 
-  function buildOptionTree(list, parentId) {
+  function buildOptionTree(list, categoryPid) {
     const tree = []
     for (const one of list) {
-      if (one.parentId === parentId) {
+      if (one.categoryPid === categoryPid) {
         const child = buildOptionTree(list, one.categoryId)
         const node = {
           value: one.categoryId,
@@ -112,7 +117,7 @@ const ProductAddUpdate = () => {
 
         <Item
           label="商品价格"
-          name="price"
+          name="productPrice"
           rules={[
             {required: true, message: '价格不能为空'},
             {type: 'number', min: 0, message: '价格格式不正确'}
@@ -135,15 +140,15 @@ const ProductAddUpdate = () => {
 
         <Item
           label="商品图片"
-          name='images'>
-          <PictureWall ref={pictureRef} images={product.images}/>
+          name="productImages">
+          <PictureWall ref={pictureRef} images={product.productImages}/>
         </Item>
 
         <Item
           label="商品详情"
-          name='productDetail'
+          name="productDetail"
           wrapperCol={{span: 15}}>
-          <RichTextEdit ref={richTextRef}/>
+          <RichTextEdit ref={richTextRef} richText={product.productDetail}/>
         </Item>
 
         <Item>

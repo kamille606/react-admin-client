@@ -79,24 +79,24 @@ const ProductHome = () => {
     },
     {
       title: '价格',
-      dataIndex: 'price',
+      dataIndex: 'productPrice',
       width: 100,
-      render: (price) => '￥' + price
+      render: (productPrice) => '￥' + productPrice
     },
     {
       title: '状态',
       width: 100,
       render: (product) => {
-        const {status} = product
+        const {productStatus} = product
         return (
           <span>
             <Button
               type="primary"
-              danger={status === 1}
+              danger={productStatus === 1}
               onClick={() => operateProduct(product)}>
-              {status === 1 ? '下架' : '上架'}
+              {productStatus === 1 ? '下架' : '上架'}
             </Button>
-            <span>{status === 1 ? '在售' : '已下架'}</span>
+            <span>{productStatus === 1 ? '在售' : '已下架'}</span>
           </span>
         )
       }

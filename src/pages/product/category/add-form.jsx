@@ -3,7 +3,7 @@ import {Form, Input, Select} from 'antd'
 
 const AddForm = (props, ref) => {
 
-  const {parentId, categoryList} = props
+  const {categoryPid, categoryList} = props
   const [form] = Form.useForm()
 
   const categoryNameRules = [
@@ -17,17 +17,17 @@ const AddForm = (props, ref) => {
   }))
 
   useEffect(() => {
-    form.setFieldsValue({parentId: parentId.toString()})
-  }, [parentId])
+    form.setFieldsValue({categoryPid: categoryPid.toString()})
+  }, [categoryPid])
 
   return (
     <Form
       form={form}
       initialValues={{
-        parentId: '0',
+        categoryPid: '0',
         categoryName: ''
       }}>
-      <Form.Item name="parentId">
+      <Form.Item name="categoryPid">
         <Select>
           <Select.Option key="0" value="0">一级分类</Select.Option>
           {

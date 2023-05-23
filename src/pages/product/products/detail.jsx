@@ -15,7 +15,7 @@ const ProductDetail = () => {
   const [productName, setProductName] = useState(EMPTY)
   const [productDesc, setProductDesc] = useState(EMPTY)
   const [productDetail, setProductDetail] = useState(EMPTY)
-  const [price, setPrice] = useState(0)
+  const [productPrice, setProductPrice] = useState(0)
   const [categoryName, setCategoryName] = useState(EMPTY)
 
   useEffect(() => {
@@ -28,11 +28,11 @@ const ProductDetail = () => {
       navigate('/product/products', {replace: true})
       return
     }
-    const {productName, productDesc, productDetail, price} = location.state
+    const {productName, productDesc, productDetail, productPrice} = location.state
     setProductName(productName)
     setProductDesc(productDesc)
     setProductDetail(productDetail)
-    setPrice(price)
+    setProductPrice(productPrice)
   }
 
   const initCategoryInfo = () => {
@@ -59,7 +59,7 @@ const ProductDetail = () => {
         </List.Item>
         <List.Item>
           <span className="left">价格:</span>
-          <span>{price}元</span>
+          <span>{productPrice}元</span>
         </List.Item>
         <List.Item>
           <span className="left">所属分类:</span>

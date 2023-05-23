@@ -20,8 +20,7 @@ const PictureWall = (props, ref) => {
   const [fileList, setFileList] = useState([])
 
   useImperativeHandle(ref, () => ({
-    getImages,
-    setImages
+    getImages
   }))
 
   useEffect(() => {
@@ -43,7 +42,6 @@ const PictureWall = (props, ref) => {
     }))
     setFileList(fileList)
   }
-
   const handleCancel = () => setPreviewOpen(false)
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {

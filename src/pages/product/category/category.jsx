@@ -13,7 +13,7 @@ const Category = () => {
   const addFormRef = useRef(null)
   const updateFormRef = useRef(null)
 
-  const [parentId, setParentId] = useState(0)
+  const [categoryPid, setCategoryPid] = useState(0)
   const [parentName, setParentName] = useState(EMPTY)
   const [category, setCategory] = useState({})
   const [categoryList, setCategoryList] = useState([])
@@ -26,14 +26,14 @@ const Category = () => {
   useEffect(() => {
     initTableColumns()
     queryCategoryList()
-  }, [parentId])
+  }, [categoryPid])
 
   const queryCategoryList = () => {
     setTableLoading(true)
-    reqCategoryList(parentId).then(response => {
+    reqCategoryList(categoryPid).then(response => {
       if (response.success) {
         const categoryList = response.data
-        if (parentId === 0) {
+        if (categoryPid === 0) {
           setCategoryList(categoryList)
         } else {
           setSubCategoryList(categoryList)
@@ -46,13 +46,13 @@ const Category = () => {
   }
 
   const showFirstCategoryList = () => {
-    setParentId(0)
+    setCategoryPid(0)
     setParentName(EMPTY)
     setSubCategoryList([])
   }
 
   const showSubCategoryList = (category) => {
-    setParentId(category.categoryId)
+    setCategoryPid(category.categoryId)
     setParentName(category.categoryName)
   }
 
@@ -72,7 +72,7 @@ const Category = () => {
   const categoryAdd = async () => {
     try {
       const values = await addFormRef.current.validateFields()
-      const response = await reqCategoryAdd(values.parentId, values.categoryName)
+      const response = await reqCategoryAdd(values.categoryPid, values.categoryName)
       if (response.success) {
         message.success('添加成功')
         addFormRef.current.cleanFormData(['categoryName'])
@@ -122,7 +122,7 @@ const Category = () => {
             <LinkButton onClick={() => showUpdateCategoryForm(category)}>
               修改分类
             </LinkButton>
-            {parentId === 0 ? (
+            {categoryPid === 0 ? (
               <LinkButton onClick={() => showSubCategoryList(category)}>
                 查看子分类
               </LinkButton>) : null}
@@ -132,7 +132,7 @@ const Category = () => {
     ])
   }
 
-  const title = parentId === 0 ? '一级分类列表' : (
+  const title = categoryPid === 0 ? '一级分类列表' : (
     <span>
       <LinkButton
         style={{fontSize: 16}}
@@ -162,7 +162,7 @@ const Category = () => {
             showQuickJumper: true,
             defaultPageSize: PAGE_SIZE
           }}
-          dataSource={parentId === 0 ? categoryList : subCategoryList}
+          dataSource={categoryPid === 0 ? categoryList : subCategoryList}
           columns={columns}/>
 
         <Modal
@@ -175,7 +175,7 @@ const Category = () => {
         >
           <AddForm
             ref={addFormRef}
-            parentId={parentId}
+            categoryPid={categoryPid}
             categoryList={categoryList}/>
         </Modal>
 
