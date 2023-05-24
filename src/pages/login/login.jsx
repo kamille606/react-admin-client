@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate()
   const user = memoryUtil.user
 
-  if (user && user.id) {
+  if (user && user.userId) {
     return <Navigate to="/"/>
   }
 
