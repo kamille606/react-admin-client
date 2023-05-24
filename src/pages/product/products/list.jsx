@@ -7,7 +7,7 @@ import LinkButton from '../../../components/LinkButton'
 import {DEFAULT_CURRENT, EMPTY, PAGE_SIZE} from '../../../config/baseConfig'
 import {reqProductOffShelf, reqProductOnSell, reqProductPage} from '../../../api'
 
-const ProductHome = () => {
+const ProductList = () => {
 
   const navigate = useNavigate()
 
@@ -47,14 +47,14 @@ const ProductHome = () => {
     navigate('/product/products/add-update', {state: product})
   }
 
-  const operateProduct = async (product) => {
+  const operateProduct = async (productStatus, productId) => {
     let response
-    switch (product.status) {
+    switch (productStatus) {
       case 1:
-        response = await reqProductOffShelf(product.productId)
+        response = await reqProductOffShelf(productId)
         break
       case 2:
-        response = await reqProductOnSell(product.productId)
+        response = await reqProductOnSell(productId)
         break
       default:
         message.error('未知商品状态')
@@ -87,13 +87,13 @@ const ProductHome = () => {
       title: '状态',
       width: 100,
       render: (product) => {
-        const {productStatus} = product
+        const {productStatus, productId} = product
         return (
           <span>
             <Button
               type="primary"
               danger={productStatus === 1}
-              onClick={() => operateProduct(product)}>
+              onClick={() => operateProduct(productStatus, productId)}>
               {productStatus === 1 ? '下架' : '上架'}
             </Button>
             <span>{productStatus === 1 ? '在售' : '已下架'}</span>
@@ -163,4 +163,4 @@ const ProductHome = () => {
   )
 }
 
-export default ProductHome
+export default ProductList

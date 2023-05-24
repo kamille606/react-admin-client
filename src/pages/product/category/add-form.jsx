@@ -1,5 +1,6 @@
 import React, {forwardRef, useEffect, useImperativeHandle} from 'react'
 import {Form, Input, Select} from 'antd'
+import {EMPTY} from '../../../config/baseConfig'
 
 const AddForm = (props, ref) => {
 
@@ -25,7 +26,7 @@ const AddForm = (props, ref) => {
       form={form}
       initialValues={{
         categoryPid: '0',
-        categoryName: ''
+        categoryName: EMPTY
       }}>
       <Form.Item name="categoryPid">
         <Select>

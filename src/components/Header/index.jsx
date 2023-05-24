@@ -48,7 +48,6 @@ const Header = () => {
       }
     }).catch(err => message.error('获取天气信息失败'))
   }
-
   const initTitle = (pathname) => {
     menuItems.forEach(item => {
       if (item.key === pathname) {

@@ -8,7 +8,7 @@ import UpdateForm from './update-form'
 import {EMPTY, PAGE_SIZE} from '../../../config/baseConfig'
 import {reqCategoryAdd, reqCategoryList, reqCategoryUpdate} from '../../../api'
 
-const Category = () => {
+const CategoryList = () => {
 
   const addFormRef = useRef(null)
   const updateFormRef = useRef(null)
@@ -196,4 +196,4 @@ const Category = () => {
   )
 }
 
-export default Category
+export default CategoryList

@@ -1,5 +1,5 @@
-import {Navigate} from 'react-router-dom'
 import React, {lazy} from 'react'
+import {Navigate} from 'react-router-dom'
 import {Spin} from 'antd'
 
 import Login from '../pages/login/login'
@@ -7,10 +7,10 @@ import Admin from '../pages/admin/admin'
 import NotFound from '../components/NotFound'
 
 const Home = lazy(() => import('../pages/home/home'))
-const Category = lazy(() => import('../pages/product/category/category'))
 
+const CategoryList = lazy(() => import('../pages/product/category/list'))
 const Products = lazy(() => import('../pages/product/products/products'))
-const ProductHome = lazy(() => import('../pages/product/products/home'))
+const ProductList = lazy(() => import('../pages/product/products/list'))
 const ProductDetail = lazy(() => import('../pages/product/products/detail'))
 const ProductAddUpdate = lazy(() => import('../pages/product/products/add-update'))
 
@@ -49,19 +49,19 @@ const routes = [
       },
       {
         path: 'product/category',
-        element: withLoading(<Category/>)
+        element: withLoading(<CategoryList/>)
       },
       {
         path: 'product/products',
-        element: <Navigate to="/product/products/home"/>
+        element: <Navigate to="/product/products/list"/>
       },
       {
         path: 'product/products',
         element: withLoading(<Products/>),
         children: [
           {
-            path: 'home',
-            element: withLoading(<ProductHome/>)
+            path: 'list',
+            element: withLoading(<ProductList/>)
           },
           {
             path: 'detail',

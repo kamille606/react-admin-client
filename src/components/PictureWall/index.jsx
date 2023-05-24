@@ -2,7 +2,7 @@ import {forwardRef, useEffect, useImperativeHandle, useState} from 'react'
 import {message, Modal, Upload} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 
-import {BASE_IMG_URL} from '../../config/baseConfig'
+import {BASE_IMG_URL, EMPTY} from '../../config/baseConfig'
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -15,8 +15,8 @@ const getBase64 = (file) =>
 const PictureWall = (props, ref) => {
 
   const [previewOpen, setPreviewOpen] = useState(false)
-  const [previewImage, setPreviewImage] = useState('')
-  const [previewTitle, setPreviewTitle] = useState('')
+  const [previewImage, setPreviewImage] = useState(EMPTY)
+  const [previewTitle, setPreviewTitle] = useState(EMPTY)
   const [fileList, setFileList] = useState([])
 
   useImperativeHandle(ref, () => ({

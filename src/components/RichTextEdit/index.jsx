@@ -26,7 +26,6 @@ const RichTextEdit = (props, ref) => {
     const currentContent = editorState.getCurrentContent()
     return draftToHtml(convertToRaw(currentContent))
   }
-
   const setRichText = (html) => {
     const contentBlock = htmlToDraft(html)
     if (contentBlock) {
@@ -35,7 +34,6 @@ const RichTextEdit = (props, ref) => {
       setEditorState(editorState)
     }
   }
-
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState)
   }

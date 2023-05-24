@@ -1,5 +1,6 @@
-import axios from 'axios'
 import {notification} from 'antd'
+import axios from 'axios'
+
 import {BASE_URL} from '../config/baseConfig'
 
 const instance = axios.create({

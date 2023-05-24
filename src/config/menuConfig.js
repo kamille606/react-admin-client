@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   AppstoreOutlined, AreaChartOutlined, BarChartOutlined,
   BarsOutlined,
@@ -6,7 +7,6 @@ import {
   ToolOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import React from 'react'
 
 const getItem = (label, key, icon, children, type) => ({
   key, icon, children, label, type,

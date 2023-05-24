@@ -5,11 +5,9 @@ import {Button, Result} from 'antd'
 const NotFound = () => {
 
   const navigate = useNavigate()
-
   const handleClick = () => {
     navigate('/')
   }
-
   return (
     <Result
       status="404"
