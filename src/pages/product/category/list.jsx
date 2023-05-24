@@ -19,12 +19,10 @@ const CategoryList = () => {
   const [categoryList, setCategoryList] = useState([])
   const [subCategoryList, setSubCategoryList] = useState([])
 
-  const [columns, setColumns] = useState([])
   const [tableLoading, setTableLoading] = useState(false)
   const [showStatus, setShowStatus] = useState(0)
 
   useEffect(() => {
-    initTableColumns()
     queryCategoryList()
   }, [categoryPid])
 
@@ -44,31 +42,25 @@ const CategoryList = () => {
     })
     setTableLoading(false)
   }
-
   const showFirstCategoryList = () => {
     setCategoryPid(0)
     setParentName(EMPTY)
     setSubCategoryList([])
   }
-
   const showSubCategoryList = (category) => {
     setCategoryPid(category.categoryId)
     setParentName(category.categoryName)
   }
-
   const showAddCategoryForm = () => {
     setShowStatus(1)
   }
-
   const showUpdateCategoryForm = (category) => {
     setCategory(category)
     setShowStatus(2)
   }
-
   const handleCancel = () => {
     setShowStatus(0)
   }
-
   const categoryAdd = async () => {
     try {
       const values = await addFormRef.current.validateFields()
@@ -85,7 +77,6 @@ const CategoryList = () => {
       console.log(err)
     }
   }
-
   const categoryUpdate = async () => {
     //表单验证
     try {
@@ -108,30 +99,27 @@ const CategoryList = () => {
     }
   }
 
-  const initTableColumns = () => {
-    setColumns([
-      {
-        title: '分类名称',
-        dataIndex: 'categoryName',
-      },
-      {
-        title: '操作',
-        width: 300,
-        render: (category) => (
-          <span>
+  const columns = [
+    {
+      title: '分类名称',
+      dataIndex: 'categoryName',
+    },
+    {
+      title: '操作',
+      width: 300,
+      render: (category) => (
+        <span>
             <LinkButton onClick={() => showUpdateCategoryForm(category)}>
               修改分类
             </LinkButton>
-            {categoryPid === 0 ? (
-              <LinkButton onClick={() => showSubCategoryList(category)}>
-                查看子分类
-              </LinkButton>) : null}
+          {categoryPid === 0 ? (
+            <LinkButton onClick={() => showSubCategoryList(category)}>
+              查看子分类
+            </LinkButton>) : null}
           </span>
-        )
-      }
-    ])
-  }
-
+      )
+    }
+  ]
   const title = categoryPid === 0 ? '一级分类列表' : (
     <span>
       <LinkButton
@@ -143,7 +131,6 @@ const CategoryList = () => {
       <span>{parentName}</span>
     </span>
   )
-
   const extra = (
     <Button type='primary' onClick={() => showAddCategoryForm()}>
       <PlusOutlined/>

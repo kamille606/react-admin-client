@@ -38,15 +38,12 @@ const ProductList = () => {
     })
     setTableLoading(false)
   }
-
   const goProductDetail = (product) => {
     navigate('/product/products/detail', {state: product})
   }
-
   const goProductUpdate = (product) => {
     navigate('/product/products/add-update', {state: product})
   }
-
   const operateProduct = async (productStatus, productId) => {
     let response
     switch (productStatus) {
@@ -114,7 +111,6 @@ const ProductList = () => {
       }
     }
   ]
-
   const title = (
     <Space>
       <Select
@@ -135,7 +131,6 @@ const ProductList = () => {
       <Button type="default" onClick={() => setSearchKeyword(EMPTY)}>重置</Button>
     </Space>
   )
-
   const extra = (
     <Button type="primary" onClick={() => navigate('/product/products/add-update')}>
       <PlusOutlined/>
