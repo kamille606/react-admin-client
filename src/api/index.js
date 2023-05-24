@@ -3,6 +3,11 @@ import request from './request'
 export const reqWeatherInfo = () => request('/manage/weather')
 
 export const reqUserLogin = async (data) => request('/user/login', data)
+export const reqRoleList = async () => request('/auth/role/list', null,'GET')
+export const reqRoleAdd = async (roleName) => request('/auth/role/add', {roleName})
+export const reqRoleUpdate = async (data) => request('/auth/role/update', {
+  roleId: data.roleId, menus: data.menus
+})
 
 export const reqProductPage = (data) => request('/product/page', {
   current: data.current, pageSize: data.pageSize, [data.searchType]: data.searchKeyword

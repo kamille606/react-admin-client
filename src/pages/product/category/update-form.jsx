@@ -6,18 +6,17 @@ const UpdateForm = (props, ref) => {
   const {categoryName} = props
   const [form] = Form.useForm()
 
-  const categoryNameRules = [
-    {required: true, message: '分类名称不能为空'}
-  ]
-
   useImperativeHandle(ref, () => ({
     getFormData: form.getFieldsValue,
     validateFields: form.validateFields
   }))
-
   useEffect(() => {
     form.setFieldsValue({categoryName})
   }, [categoryName])
+
+  const categoryNameRules = [
+    {required: true, message: '分类名称不能为空'}
+  ]
 
   return (
     <Form form={form}>

@@ -4,7 +4,7 @@ import {Button, message, Modal} from 'antd'
 import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
 
 import LinkButton from '../LinkButton'
-import {formatDate} from '../../utils/dateUtil'
+import {formatDateNow} from '../../utils/dateUtil'
 import memory from '../../utils/memoryUtil'
 import store from '../../utils/storageUtil'
 import {EMPTY} from '../../config/baseConfig'
@@ -19,14 +19,14 @@ const Header = () => {
   const location = useLocation()
   const [weatherNow, setWeatherNow] = useState(EMPTY)
   const [temperature, setTemperature] = useState(EMPTY)
-  const [timeNow, setTimeNow] = useState(formatDate())
+  const [timeNow, setTimeNow] = useState(formatDateNow())
   const [user] = useState(memory.user)
   const [title, setTitle] = useState(EMPTY)
 
   useLayoutEffect(() => {
     initTitle(location.pathname)
     const id = setInterval(() => {
-      setTimeNow(formatDate())
+      setTimeNow(formatDateNow())
     }, 1000)
     return () => {
       clearInterval(id)

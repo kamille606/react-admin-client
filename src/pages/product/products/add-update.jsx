@@ -53,7 +53,6 @@ const ProductAddUpdate = () => {
       setProduct(product)
     }
   }
-
   const buildOptionTree = (list, categoryPid) => {
     const tree = []
     for (const one of list) {
@@ -70,7 +69,6 @@ const ProductAddUpdate = () => {
     }
     return tree
   }
-
   const getCategoryOptions = async () => {
     const response = await reqCategoryList(null)
     if (response.success) {
@@ -80,7 +78,6 @@ const ProductAddUpdate = () => {
       return []
     }
   }
-
   const submit = async () => {
     try {
       const values = await form.validateFields()

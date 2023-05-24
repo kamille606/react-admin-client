@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {Card, List, message} from 'antd'
 
-import bg from '../../../assets/images/bg.jpeg'
-import {reqCategoryInfo} from '../../../api'
-import {EMPTY} from '../../../config/baseConfig'
 import ArrowTitle from '../../../components/ArrowTitle'
+import {EMPTY} from '../../../config/baseConfig'
+import {reqCategoryInfo} from '../../../api'
+
+import bg from '../../../assets/images/bg.jpeg'
 
 const ProductDetail = () => {
 

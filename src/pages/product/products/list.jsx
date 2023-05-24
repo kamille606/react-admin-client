@@ -152,8 +152,7 @@ const ProductList = () => {
           onChange: queryProductList
         }}
         dataSource={productList}
-        columns={columns}>
-      </Table>
+        columns={columns}/>
     </Card>
   )
 }

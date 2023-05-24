@@ -139,47 +139,45 @@ const CategoryList = () => {
   )
 
   return (
-    <div>
-      <Card title={title} extra={extra}>
-        <Table
-          bordered={true}
-          loading={tableLoading}
-          rowKey="categoryId"
-          pagination={{
-            showQuickJumper: true,
-            defaultPageSize: PAGE_SIZE
-          }}
-          dataSource={categoryPid === 0 ? categoryList : subCategoryList}
-          columns={columns}/>
+    <Card title={title} extra={extra}>
+      <Table
+        bordered={true}
+        loading={tableLoading}
+        rowKey="categoryId"
+        pagination={{
+          showQuickJumper: true,
+          defaultPageSize: PAGE_SIZE
+        }}
+        dataSource={categoryPid === 0 ? categoryList : subCategoryList}
+        columns={columns}/>
 
-        <Modal
-          title="添加分类"
-          open={showStatus === 1}
-          onOk={categoryAdd}
-          onCancel={handleCancel}
-          okText="添加"
-          cancelText="取消"
-        >
-          <AddForm
-            ref={addFormRef}
-            categoryPid={categoryPid}
-            categoryList={categoryList}/>
-        </Modal>
+      <Modal
+        title="添加分类"
+        open={showStatus === 1}
+        onOk={categoryAdd}
+        onCancel={handleCancel}
+        okText="添加"
+        cancelText="取消"
+      >
+        <AddForm
+          ref={addFormRef}
+          categoryPid={categoryPid}
+          categoryList={categoryList}/>
+      </Modal>
 
-        <Modal
-          title="修改分类"
-          open={showStatus === 2}
-          onOk={categoryUpdate}
-          onCancel={handleCancel}
-          okText="修改"
-          cancelText="取消"
-        >
-          <UpdateForm
-            ref={updateFormRef}
-            categoryName={category.categoryName}/>
-        </Modal>
-      </Card>
-    </div>
+      <Modal
+        title="修改分类"
+        open={showStatus === 2}
+        onOk={categoryUpdate}
+        onCancel={handleCancel}
+        okText="修改"
+        cancelText="取消"
+      >
+        <UpdateForm
+          ref={updateFormRef}
+          categoryName={category.categoryName}/>
+      </Modal>
+    </Card>
   )
 }
 
