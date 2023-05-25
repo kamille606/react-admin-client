@@ -2,11 +2,15 @@ import request from './request'
 
 export const reqWeatherInfo = () => request('/manage/weather')
 
-export const reqUserLogin = async (data) => request('/auth/user/login', data)
-export const reqUserList = async () => request('/auth/user/list', null, 'GET')
-export const reqRoleList = async () => request('/auth/role/list', null,'GET')
-export const reqRoleAdd = async (roleName) => request('/auth/role/add', {roleName})
-export const reqRoleUpdate = async (data) => request('/auth/role/update', {
+export const reqUserLogin = (data) => request('/auth/user/login', data)
+export const reqUserList = () => request('/auth/user/list', null, 'GET')
+export const reqUserAdd = (user) => request('/auth/user/add', user)
+export const reqUserDelete = (userId) => request('/auth/user/delete', {userId})
+export const reqUserUpdate = (user) => request('/auth/user/update', user)
+
+export const reqRoleList = () => request('/auth/role/list', null,'GET')
+export const reqRoleAdd = (roleName) => request('/auth/role/add', {roleName})
+export const reqRoleUpdate = (data) => request('/auth/role/update', {
   roleId: data.roleId, menus: data.menus
 })
 

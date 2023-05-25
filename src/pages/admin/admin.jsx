@@ -14,7 +14,7 @@ const Admin = () => {
 
   useEffect(() => {
     const user = memoryUtil.user
-    if (!user || !user.id) {
+    if (!user || !user.userId) {
       message.error('暂未登录，返回登录页面').then()
       navigate('/login', {replace: true})
     }

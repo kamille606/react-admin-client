@@ -36,7 +36,7 @@ const Role = () => {
       const values = await addFormRef.current.validateFields()
       const response = await reqRoleAdd(values.roleName)
       if (response.success) {
-        message.success('添加角色成功').then()
+        message.success('角色添加成功').then()
         setIsShowAdd(false)
         addFormRef.current.cleanFormData()
         queryRoleList()

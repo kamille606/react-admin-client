@@ -67,8 +67,8 @@ const CategoryList = () => {
       const response = await reqCategoryAdd(values.categoryPid, values.categoryName)
       if (response.success) {
         message.success('添加成功')
-        addFormRef.current.cleanFormData(['categoryName'])
         setShowStatus(0)
+        addFormRef.current.cleanFormData(['categoryName'])
         queryCategoryList()
       } else {
         message.error(response.message)
