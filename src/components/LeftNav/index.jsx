@@ -2,13 +2,17 @@ import React,{useState} from 'react'
 import {Link, useNavigate, useLocation} from 'react-router-dom'
 import {Menu} from 'antd'
 
+import memoryUtil from '../../utils/memoryUtil'
 import {menuItems} from '../../config/menuConfig'
+
 import './index.scss'
 
 const LeftNav = () => {
 
   const navigate = useNavigate()
   const currentRoute = useLocation()
+
+  const menus = memoryUtil.user.role.menus.split(',')
   let selectedKey = currentRoute.pathname
   const firstOpenKey = selectedKey.split('/')[1]
   const [openKeys, setOpenKeys] = useState(['/' + firstOpenKey])
@@ -17,6 +21,19 @@ const LeftNav = () => {
     selectedKey = '/product/products'
   }
 
+  const getAuthMenuItems = (menuItems) => {
+    return menuItems.reduce((pre, item) => {
+      if (menus.indexOf(item.key) !== -1) {
+        pre.push({
+          label: item.label,
+          key: item.key,
+          icon: item.icon,
+          children: item.children ? getAuthMenuItems(item.children) : null
+        })
+      }
+      return pre
+    }, [])
+  }
   const handleClick = (e) => {
     navigate(e.key)
   }
@@ -33,7 +50,7 @@ const LeftNav = () => {
       <Menu
         mode="inline"
         theme="dark"
-        items={menuItems}
+        items={getAuthMenuItems(menuItems)}
         openKeys={openKeys}
         selectedKeys={[selectedKey]}
         onClick={handleClick}
