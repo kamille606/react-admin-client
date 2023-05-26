@@ -1,13 +1,27 @@
-import React,{useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link, useNavigate, useLocation} from 'react-router-dom'
+import {connect} from 'react-redux'
 import {Menu} from 'antd'
 
+import {setHeadTitle} from '../../redux/actions'
 import memoryUtil from '../../utils/memoryUtil'
 import {menuItems} from '../../config/menuConfig'
 
 import './index.scss'
 
-const LeftNav = () => {
+const getMenuMap = (menuItems, menuMap) => {
+  menuItems.forEach(item => {
+    menuMap.set(item.key, item.label)
+    if (item.children) {
+      getMenuMap(item.children, menuMap)
+    }
+  })
+  return menuMap
+}
+
+const menuMap = getMenuMap(menuItems, new Map())
+
+const LeftNav = (props) => {
 
   const navigate = useNavigate()
   const currentRoute = useLocation()
@@ -20,6 +34,10 @@ const LeftNav = () => {
   if (selectedKey.startsWith('/product/products')) {
     selectedKey = '/product/products'
   }
+
+  useEffect(() => {
+    props.setHeadTitle(menuMap.get(selectedKey))
+  }, [selectedKey])
 
   const getAuthMenuItems = (menuItems) => {
     return menuItems.reduce((pre, item) => {
@@ -60,4 +78,7 @@ const LeftNav = () => {
   )
 }
 
-export default LeftNav
+export default connect(
+  state => ({}),
+  {setHeadTitle}
+)(LeftNav)

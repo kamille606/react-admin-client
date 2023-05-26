@@ -35,15 +35,15 @@ const Login = () => {
     if (!value) {
       return Promise.reject('密码为空')
     }
-    if (value.length < 4 || value.length > 12) {
-      return Promise.reject('密码长度不能小于4或者大于12')
+    if (value.length < 3) {
+      return Promise.reject('密码长度不能小于3')
     }
     return Promise.resolve()
   }
 
   const usernameRules = [
     {required: true, whitespace: true, message: '请输入用户名!'},
-    {min: 4, message: '用户名至少4位!'},
+    {min: 3, message: '用户名至少3位!'},
     {max: 12, message: '用户名最多12位!'},
     {pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文，数字或下划线!'}
   ]

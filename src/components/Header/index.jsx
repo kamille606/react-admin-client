@@ -1,5 +1,6 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react'
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
+import {connect} from 'react-redux'
 import {Button, message, Modal} from 'antd'
 import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
 
@@ -8,30 +9,28 @@ import {formatDateNow} from '../../utils/dateUtil'
 import memory from '../../utils/memoryUtil'
 import store from '../../utils/storageUtil'
 import {EMPTY} from '../../config/baseConfig'
-import {menuItems} from '../../config/menuConfig'
 import {reqWeatherInfo} from '../../api'
 
 import './index.scss'
 
-const Header = () => {
+const Header = (props) => {
 
   const navigate = useNavigate()
-  const location = useLocation()
   const [weatherNow, setWeatherNow] = useState(EMPTY)
   const [temperature, setTemperature] = useState(EMPTY)
   const [timeNow, setTimeNow] = useState(formatDateNow())
   const [user] = useState(memory.user)
-  const [title, setTitle] = useState(EMPTY)
+
+  const title = props.headTitle
 
   useLayoutEffect(() => {
-    initTitle(location.pathname)
     const id = setInterval(() => {
       setTimeNow(formatDateNow())
     }, 1000)
     return () => {
       clearInterval(id)
     }
-  }, [location.pathname])
+  }, [])
 
   useEffect(() => {
     initWeatherInfo()
@@ -47,18 +46,6 @@ const Header = () => {
         message.error('获取天气信息失败').then()
       }
     }).catch(err => message.error('获取天气信息失败', err))
-  }
-  const initTitle = (pathname) => {
-    menuItems.forEach(item => {
-      if (item.key === pathname) {
-        setTitle(item.label)
-      } else if (item.children) {
-        const cItem = item.children.find(cItem => pathname.indexOf(cItem.key) === 0)
-        if (cItem) {
-          setTitle(cItem.label)
-        }
-      }
-    })
   }
 
   const logout = () => {
@@ -90,7 +77,6 @@ const Header = () => {
         <div className="header-bottom-left">{title}</div>
         <div className="header-bottom-right">
           <span>时间:{timeNow}</span>
-          {/*<img></img>*/}
           <span>天气：{weatherNow}</span>
           <span>温度：{temperature}℃</span>
         </div>
@@ -99,4 +85,7 @@ const Header = () => {
   )
 }
 
-export default Header
+export default connect(
+  state => ({headTitle: state.headTitle}),
+  {}
+)(Header)
