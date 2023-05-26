@@ -1,34 +1,30 @@
-import React from 'react'
-import {Navigate, useNavigate} from 'react-router-dom'
+import React, {useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {connect} from 'react-redux'
 import {Button, Form, Input, message} from 'antd'
 import {LockOutlined, UserOutlined} from '@ant-design/icons'
 
-import memoryUtil from '../../utils/memoryUtil'
-import storageUtil from '../../utils/storageUtil'
-import {reqUserLogin} from '../../api'
+import {userLogin} from '../../redux/actions'
 
 import './login.scss'
 
-const Login = () => {
+const Login = (props) => {
 
   const navigate = useNavigate()
-  const user = memoryUtil.user
 
-  if (user && user.userId) {
-    return <Navigate to="/"/>
-  }
+  useEffect(() => {
+    const user = props.user
+    if (user && user.userId) {
+      navigate('/home', {replace: true})
+    }
+    if (user && user.errorMessage) {
+      message.error(user.errorMessage).then()
+    }
+  }, [props.user])
 
   const onFinish = async (values) => {
-    const response = await reqUserLogin(values)
-    if (response.success) {
-      message.success('登录成功')
-      const user = response.data
-      memoryUtil.user = user
-      storageUtil.setUser(user)
-      navigate('/', {replace: true})
-    } else {
-      message.error(response.message)
-    }
+    const {username, password} = values
+    props.userLogin(username, password)
   }
 
   const validatorPassword = (rule, value) => {
@@ -54,23 +50,23 @@ const Login = () => {
   ]
 
   return (
-    <div className='login'>
-      <header className='login-header'>
+    <div className="login">
+      <header className="login-header">
         <h1>后台管理项目</h1>
       </header>
-      <section className='login-content'>
+      <section className="login-content">
         <h2>用户登录</h2>
         <div>
-          <Form name='normal_login' className='login-form' onFinish={onFinish}>
-            <Form.Item name='username' rules={usernameRules}>
-              <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder='用户名'/>
+          <Form name="normal_login" className="login-form" onFinish={onFinish}>
+            <Form.Item name="username" rules={usernameRules}>
+              <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="用户名"/>
             </Form.Item>
-            <Form.Item name='password' rules={passwordRules}>
-              <Input prefix={<LockOutlined className="site-form-item-icon"/>} type='password' placeholder='密码'/>
+            <Form.Item name="password" rules={passwordRules}>
+              <Input prefix={<LockOutlined className="site-form-item-icon"/>} type="password" placeholder="密码"/>
             </Form.Item>
 
             <Form.Item>
-              <Button type='primary' htmlType='submit' className='login-form-button'>
+              <Button type="primary" htmlType="submit" className="login-form-button">
                 {'登录'}
               </Button>
             </Form.Item>
@@ -81,4 +77,7 @@ const Login = () => {
   )
 }
 
-export default Login
+export default connect(
+  state => ({user: state.user}),
+  {userLogin}
+)(Login)

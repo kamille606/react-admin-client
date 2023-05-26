@@ -1,19 +1,19 @@
 import React, {useEffect} from 'react'
 import {Outlet, useNavigate} from 'react-router-dom'
+import {connect} from 'react-redux'
 import {Layout, message} from 'antd'
 
 import LeftNav from '../../components/LeftNav'
 import Header from '../../components/Header'
-import memoryUtil from '../../utils/memoryUtil'
 
 const {Footer, Sider, Content} = Layout
 
-const Admin = () => {
+const Admin = (props) => {
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    const user = memoryUtil.user
+    const user = props.user
     if (!user || !user.userId) {
       message.error('暂未登录，返回登录页面').then()
       navigate('/login', {replace: true})
@@ -36,4 +36,7 @@ const Admin = () => {
   )
 }
 
-export default Admin
+export default connect(
+  state => ({user: state.user}),
+  {}
+)(Admin)

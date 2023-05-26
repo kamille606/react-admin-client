@@ -4,10 +4,9 @@ import {connect} from 'react-redux'
 import {Button, message, Modal} from 'antd'
 import {ExclamationCircleFilled, PoweroffOutlined} from '@ant-design/icons'
 
+import {userLogout} from '../../redux/actions'
 import LinkButton from '../LinkButton'
 import {formatDateNow} from '../../utils/dateUtil'
-import memory from '../../utils/memoryUtil'
-import store from '../../utils/storageUtil'
 import {EMPTY} from '../../config/baseConfig'
 import {reqWeatherInfo} from '../../api'
 
@@ -19,8 +18,8 @@ const Header = (props) => {
   const [weatherNow, setWeatherNow] = useState(EMPTY)
   const [temperature, setTemperature] = useState(EMPTY)
   const [timeNow, setTimeNow] = useState(formatDateNow())
-  const [user] = useState(memory.user)
 
+  const user = props.user
   const title = props.headTitle
 
   useLayoutEffect(() => {
@@ -53,8 +52,7 @@ const Header = (props) => {
       title: '确定退出吗?',
       icon: <ExclamationCircleFilled/>,
       onOk() {
-        store.removeUser()
-        memory.user = {}
+        props.userLogout()
         navigate('/login', {replace: true})
       },
       okText: '退出',
@@ -86,6 +84,6 @@ const Header = (props) => {
 }
 
 export default connect(
-  state => ({headTitle: state.headTitle}),
-  {}
+  state => ({headTitle: state.headTitle, user: state.user}),
+  {userLogout}
 )(Header)

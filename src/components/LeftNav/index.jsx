@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import {Menu} from 'antd'
 
 import {setHeadTitle} from '../../redux/actions'
-import memoryUtil from '../../utils/memoryUtil'
 import {menuItems} from '../../config/menuConfig'
 
 import './index.scss'
@@ -26,7 +25,7 @@ const LeftNav = (props) => {
   const navigate = useNavigate()
   const currentRoute = useLocation()
 
-  const menus = memoryUtil.user.role.menus.split(',')
+  const menus = props.user.role.menus.split(',')
   let selectedKey = currentRoute.pathname
   const firstOpenKey = selectedKey.split('/')[1]
   const [openKeys, setOpenKeys] = useState(['/' + firstOpenKey])
@@ -79,6 +78,6 @@ const LeftNav = (props) => {
 }
 
 export default connect(
-  state => ({}),
+  (state) => ({user: state.user}),
   {setHeadTitle}
 )(LeftNav)
