@@ -14,13 +14,12 @@ import './index.scss'
 
 const Header = (props) => {
 
+  const {user, headTitle} = props
+
   const navigate = useNavigate()
   const [weatherNow, setWeatherNow] = useState(EMPTY)
   const [temperature, setTemperature] = useState(EMPTY)
   const [timeNow, setTimeNow] = useState(formatDateNow())
-
-  const user = props.user
-  const title = props.headTitle
 
   useLayoutEffect(() => {
     const id = setInterval(() => {
@@ -44,7 +43,7 @@ const Header = (props) => {
       } else {
         message.error('获取天气信息失败').then()
       }
-    }).catch(err => message.error('获取天气信息失败', err))
+    }).catch(err => message.error('获取天气信息失败'))
   }
 
   const logout = () => {
@@ -72,7 +71,7 @@ const Header = (props) => {
         <LinkButton onClick={logout}>退出</LinkButton>
       </div>
       <div className="header-bottom">
-        <div className="header-bottom-left">{title}</div>
+        <div className="header-bottom-left">{headTitle}</div>
         <div className="header-bottom-right">
           <span>时间:{timeNow}</span>
           <span>天气：{weatherNow}</span>

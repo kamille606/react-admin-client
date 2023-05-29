@@ -14,6 +14,8 @@ const getBase64 = (file) =>
 
 const PictureWall = (props, ref) => {
 
+  const {images} = props
+
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewImage, setPreviewImage] = useState(EMPTY)
   const [previewTitle, setPreviewTitle] = useState(EMPTY)
@@ -24,11 +26,10 @@ const PictureWall = (props, ref) => {
   }))
 
   useEffect(() => {
-    const images = props.images
     if (images) {
       setImages(images)
     }
-  }, [props.images])
+  }, [images])
 
   const getImages = () => {
     return fileList.map(file => file.name)

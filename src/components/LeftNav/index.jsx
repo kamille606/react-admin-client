@@ -22,17 +22,26 @@ const menuMap = getMenuMap(menuItems, new Map())
 
 const LeftNav = (props) => {
 
+  const {user} = props
+
   const navigate = useNavigate()
   const currentRoute = useLocation()
 
-  const menus = props.user.role.menus.split(',')
   let selectedKey = currentRoute.pathname
   const firstOpenKey = selectedKey.split('/')[1]
+
+  const [menus, setMenus] = useState([])
   const [openKeys, setOpenKeys] = useState(['/' + firstOpenKey])
 
   if (selectedKey.startsWith('/product/products')) {
     selectedKey = '/product/products'
   }
+
+  useEffect(() => {
+    if (user.role) {
+      setMenus(user.role.menus.split(','))
+    }
+  }, [user])
 
   useEffect(() => {
     props.setHeadTitle(menuMap.get(selectedKey))

@@ -9,6 +9,8 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 const RichTextEdit = (props, ref) => {
 
+  const {richText} = props
+
   const [editorState, setEditorState] = React.useState(EditorState.createEmpty())
 
   useImperativeHandle(ref, () => ({
@@ -16,11 +18,10 @@ const RichTextEdit = (props, ref) => {
   }))
 
   useEffect(() => {
-    const richText = props.richText
     if (richText) {
-      setRichText(props.richText)
+      setRichText(richText)
     }
-  }, [props.richText])
+  }, [richText])
 
   const getRichText = () => {
     const currentContent = editorState.getCurrentContent()

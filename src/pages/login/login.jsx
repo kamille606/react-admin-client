@@ -10,17 +10,17 @@ import './login.scss'
 
 const Login = (props) => {
 
+  const {user} = props
   const navigate = useNavigate()
 
   useEffect(() => {
-    const user = props.user
     if (user && user.userId) {
       navigate('/home', {replace: true})
     }
     if (user && user.errorMessage) {
       message.error(user.errorMessage).then()
     }
-  }, [props.user])
+  }, [user])
 
   const onFinish = async (values) => {
     const {username, password} = values
