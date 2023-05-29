@@ -4,7 +4,7 @@ import {Spin} from 'antd'
 
 import Login from '../pages/login/login'
 import Admin from '../pages/admin/admin'
-import NotFound from '../components/NotFound'
+import NotFound from '../pages/404/not-found'
 
 const Home = lazy(() => import('../pages/home/home'))
 
