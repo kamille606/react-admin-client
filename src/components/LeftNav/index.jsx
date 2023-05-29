@@ -42,7 +42,6 @@ const LeftNav = (props) => {
       setMenus(user.role.menus.split(','))
     }
   }, [user])
-
   useEffect(() => {
     props.setHeadTitle(menuMap.get(selectedKey))
   }, [selectedKey])
@@ -66,6 +65,7 @@ const LeftNav = (props) => {
   const handleOpenChange = (openKeys) => {
     setOpenKeys([openKeys[openKeys.length - 1]])
   }
+
   return (
     <div className="left-nav">
       <Link to="/" className="left-nav-header">
